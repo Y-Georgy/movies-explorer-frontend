@@ -1,6 +1,14 @@
+* {
+  outline: red 1px dashed;
+}
+
 .header {
+  background-color: #073042;
+}
+
+.header__container {
   min-height: 74px;
-  width: 1280px;
+  max-width: 1280px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -37,3 +45,25 @@
   padding: 8px 20px;
   border-radius: 3px;
 }
+
+@media (max-width: 1279px) {
+  .header__container {
+    padding: 0 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .header__container {
+    padding: 0 14px;
+  }
+
+  .header__link-register {
+    font-size: 10px;
+  }
+
+  .header__link-login {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+}
+
