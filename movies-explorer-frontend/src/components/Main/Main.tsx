@@ -1,17 +1,15 @@
 import './Main.css';
-import Header from '../Header/Header';
 import Promo from '../Promo/Promo';
 import NavTab from '../NavTab/NavTab';
+import AboutProject from '../AboutProject/AboutProject';
 
 function Main() {
   return (
-    <>
-      <div className="head-container">
-        <Header />
-        <Promo />
-        <NavTab />
-      </div>
-    </>
+    <main className="main">
+      <Promo />
+      <NavTab />
+      <AboutProject />
+    </main>
   )
 }
 
