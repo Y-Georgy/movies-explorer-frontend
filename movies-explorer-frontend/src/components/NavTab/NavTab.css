@@ -1,11 +1,11 @@
-.navtab {
+.nav-tab {
   background-color: #272727;
   min-height: 66px;
   display: flex;
   align-items: center;
 }
 
-.navtab__list {
+.nav-tab__list {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -14,7 +14,7 @@
   margin: 0 auto;
 }
 
-.navtab__link {
+.nav-tab__link {
   color: #fff;
   margin-right: 40px;
   font-size: 13px;
@@ -23,6 +23,14 @@
   text-decoration: underline;
 }
 
-.navtab__link:last-of-type {
+.nav-tab__link:last-of-type {
   margin-right: 0;
+}
+
+@media (max-width: 767px) {
+  .nav-tab__link {
+    color: #fff;
+    margin-right: 24px;
+    font-size: 11px;
+  }
 }

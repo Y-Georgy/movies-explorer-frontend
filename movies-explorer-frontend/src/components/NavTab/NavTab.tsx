@@ -2,11 +2,11 @@ import './NavTab.css'
 
 function NavTab() {
   return (
-    <section className="navtab">
-      <ul className="navtab__list">
-        <li className="navtab__link">О проекте</li>
-        <li className="navtab__link">Технологии</li>
-        <li className="navtab__link">Студент</li>
+    <section className="nav-tab">
+      <ul className="nav-tab__list">
+        <li className="nav-tab__link">О проекте</li>
+        <li className="nav-tab__link">Технологии</li>
+        <li className="nav-tab__link">Студент</li>
       </ul>
     </section>
   )
