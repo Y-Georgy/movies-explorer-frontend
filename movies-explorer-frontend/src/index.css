@@ -16,6 +16,24 @@
        url("./vendor/Inter-Medium.woff") format("woff");
 }
 
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./vendor/Inter-SemiBold.woff2") format("woff2"),
+       url("./vendor/Inter-SemiBold.woff") format("woff");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./vendor/Inter-Bold.woff2") format("woff2"),
+       url("./vendor/Inter-Bold.woff") format("woff");
+}
+
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
