@@ -8,7 +8,7 @@ function Portfolio() {
       <ul className="portfolio__list">
         <li className="portfolio__list-elem">
           <a href="https://ya.ru" className="portfolio__link" target="_blank" rel="noreferrer">
-            Статичный сайтa
+            Статичный сайт
           </a>
         </li>
         <li className="portfolio__list-elem">
