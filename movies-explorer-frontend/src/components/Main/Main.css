@@ -10,11 +10,7 @@
   flex-direction: column;
 }
 
-@media (max-width: 1279px) {
-  .main__section {
-    padding: 90px 50px;
-  }
-}
+
 
 .main__section-title {
   line-height: 27px;
@@ -23,6 +19,12 @@
   margin: 0 0 70px;
   padding-bottom: 23px;
   border-bottom: 1px #DADADA solid;
+}
+
+@media (max-width: 1279px) {
+  .main__section {
+    padding: 90px 50px;
+  }
 }
 
 @media (max-width: 767px) {
