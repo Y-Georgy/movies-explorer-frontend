@@ -1,8 +1,4 @@
-* {
-  outline: 1px dashed red;
-}
-
-.about-me {
+.about-me__article {
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
@@ -88,6 +84,10 @@
 
 @media (max-width: 767px) {
   .about-me {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .about-me__article {
     margin-top: 0;
     flex-direction: column-reverse;
     align-items: center;
@@ -118,7 +118,8 @@
   .about-me__text {
     font-size: 11px;
     line-height: 16px;
-    margin-bottom: 40px;  }
+    margin-bottom: 40px;
+  }
 
   .about-me__social-link {
     margin-right: 26px;
