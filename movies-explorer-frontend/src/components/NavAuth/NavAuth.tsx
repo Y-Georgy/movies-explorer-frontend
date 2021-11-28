@@ -1,15 +1,16 @@
 import './NavAuth.css'
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 const NavAuth: React.FC = () => {
     return (
-      <nav className="header__links">
-        <div className="header__link-register">
+      <nav className="nav-auth">
+        <Link to="/signup" className="nav-auth__link-register">
           Регистрация
-        </div>
-        <div className="header__link-login">
+        </Link>
+        <Link to="/signin" className="nav-auth__link-login">
           Войти
-        </div>
+        </Link>
       </nav>
     )
 }
