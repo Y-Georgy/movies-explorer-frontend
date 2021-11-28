@@ -1,10 +1,14 @@
 import './Movies.css'
+import Header from '../Header/Header';
 
 function Movies() {
   return (
-    <section className="Movies">
+    <>
+      <Header />
+      <main className="Movies">
 
-    </section>
+      </main>
+    </>
   )
 }
 
