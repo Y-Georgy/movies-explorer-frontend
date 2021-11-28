@@ -10,7 +10,7 @@ const Header = ({ component: HeaderNav }: Props) => {
     <header className="header">
       <section className="header__container">
         <img src={logo} alt="Логотип Movies-explorer" className="header__logo" />
-        {HeaderNav && <HeaderNav />}
+        <HeaderNav />
       </section>
     </header>
   )

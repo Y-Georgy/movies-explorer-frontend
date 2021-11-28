@@ -1,0 +1,34 @@
+.nav-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.nav-page__link {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #fff;
+  margin-right: 20px;
+  text-decoration: none;
+}
+
+.nav-page__link_bold {
+  font-weight: 500;
+}
+
+.nav-page__btn-account {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #fff;
+  margin-left: 20px;
+  text-decoration: none;
+  padding: 8px 12px 8px 31px;
+  outline: 2px solid rgba(170, 170, 170, 0.2);
+  border-radius: 50px;
+  background-image: url(../../images/icon-account.svg);
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  background-size: 12px 14px;
+}
