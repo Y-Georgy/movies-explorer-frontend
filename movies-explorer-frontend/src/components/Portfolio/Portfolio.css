@@ -1,6 +1,6 @@
 .portfolio {
   padding-top: 30px;
-  padding-bottom: 125px;
+  padding-bottom: 106px;
 }
 
 .portfolio__title {
@@ -49,8 +49,8 @@
 
 @media (max-width: 1023px) {
   .portfolio {
-    padding-top: 40px;
-    padding-bottom: 90px;
+    padding-top: 0;
+    padding-bottom: 71px;
   }
 
   .portfolio__link {
@@ -60,7 +60,7 @@
 
 @media (max-width: 767px) {
   .portfolio {
-    padding: 0 14px 70px;
+    padding: 0 14px 51px;
   }
 
   .portfolio__title {
