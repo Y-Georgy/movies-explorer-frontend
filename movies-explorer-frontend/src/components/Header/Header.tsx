@@ -1,11 +1,17 @@
 import './Header.css'
 import logo from '../../images/logo.svg'
+import React from 'react'
 
-const Header = () => {
+interface Props { component?: React.ComponentType }
+
+const Header = ({ component: HeaderNav }: Props) => {
+  if (!HeaderNav) return null;
+
   return (
     <header className="header">
       <section className="header__container">
         <img src={logo} alt="Логотип Movies-explorer" className="header__logo" />
+        <HeaderNav />
       </section>
     </header>
   )

@@ -1,6 +1,7 @@
 import './NavAuth.css'
+import React from 'react'
 
-const NavAuth = (): JSX.Element => {
+const NavAuth: React.FC = () => {
     return (
       <nav className="header__links">
         <div className="header__link-register">

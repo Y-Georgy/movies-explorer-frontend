@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
+import NavAuth from '../NavAuth/NavAuth';
 import './App.css';
 import { Route, Routes } from 'react-router-dom'
 
@@ -14,7 +15,7 @@ function App() {
         <Route path="/movies" element={<Movies />} />
         <Route path="/" element={
           <>
-            <Header />
+            <Header component={NavAuth}/>
             <Main />
             <Footer />
           </>
