@@ -15,7 +15,7 @@ function App() {
         <Route path="/movies" element={<Movies />} />
         <Route path="/" element={
           <>
-            <Header component={NavAuth}/>
+            <Header children={<NavAuth />} bgcolor="blue" />
             <Main />
             <Footer />
           </>

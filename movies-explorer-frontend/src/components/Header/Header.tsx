@@ -1,16 +1,19 @@
 import './Header.css'
 import logo from '../../images/logo.svg'
 import React from 'react'
+import { Link } from 'react-router-dom';
 
-interface Props { component: React.ComponentType }
+interface Props {
+  children: React.ReactNode,
+  bgcolor: string
+}
 
-const Header = ({ component: HeaderNav }: Props) => {
-
+const Header = ({ children, bgcolor }: Props) => {
   return (
-    <header className="header">
+    <header className={`header header_bgcolor_${bgcolor}`}>
       <section className="header__container">
-        <img src={logo} alt="Логотип Movies-explorer" className="header__logo" />
-        <HeaderNav />
+        <Link to="/"><img src={logo} alt="Логотип Movies-explorer" className="header__logo" /></Link>
+        {children}
       </section>
     </header>
   )

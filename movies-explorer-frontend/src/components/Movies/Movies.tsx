@@ -5,7 +5,7 @@ import NavPage from '../NavPage/NavPage';
 function Movies() {
   return (
     <>
-      <Header component={NavPage}/>
+      <Header children={<NavPage />} bgcolor="grey"/>
       <main className="Movies">
 
       </main>

@@ -1,5 +1,9 @@
-.header {
+.header_bgcolor_blue {
   background-color: #073042;
+}
+
+.header_bgcolor_grey {
+  background-color: #202020;
 }
 
 .header__container {
