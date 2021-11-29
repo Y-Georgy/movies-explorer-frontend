@@ -1,53 +1,73 @@
-interface ICard {
+export interface ICard {
+  _id: string;
   nameRU: string,
   duration: number,
+  trailerLink: string,
   url: string
 }
 
 export const initialCards: ICard[] = [
   {
+    _id: "1",
     nameRU: "Роллинг Стоунз» в изгнании",
     duration: 61,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_stones_in_exile_b2f1b8f4b7.jpeg"
+    trailerLink: "https://www.youtube.com/watch?v=UXcqcdYABFw",
+    url: "https://api.nomoreparties.co/uploads/stones_in_exile_b2f1b8f4b7.jpeg"
   },
   {
-    nameRU: "All Tomorrow's Parties",
-    duration: 82,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_all_tommoros_parties_33a125248d.jpeg"
+    _id: "2",
+    nameRU: "Taqwacore: The Birth of Punk Islam",
+    duration: 80,
+    trailerLink: "https://www.youtube.com/watch?v=JMZ8DO9F4Mo",
+    url: "https://api.nomoreparties.co/uploads/taqwacore2_2f487d2e74.jpeg"
   },
   {
+    _id: "3",
     nameRU: "Без обратного пути",
     duration: 104,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_blur_a43fcf463d.jpeg"
+    trailerLink: "https://www.youtube.com/watch?v=6iYxdghpJZY",
+    url: "https://api.nomoreparties.co/uploads/blur_a43fcf463d.jpeg"
   },
   {
+    _id: "4",
     nameRU: "Фавела на взрыве",
     duration: 80,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_881707734_640_d6a3a43358.jpeg"
+    trailerLink: "https://www.youtube.com/watch?v=Cugdwa7mndA",
+    url: "https://api.nomoreparties.co/uploads/881707734_640_d6a3a43358.jpeg"
   },
   {
+    _id: "5",
     nameRU: "Постеры, сошедшие со стен",
     duration: 32,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_posters_came_from_the_walls_2009_001_posters_180fe1a19f.jpeg"
+    trailerLink: "https://www.youtube.com/watch?v=VFMU3crg0sM",
+    url: "https://api.nomoreparties.co/uploads/posters_came_from_the_walls_2009_001_posters_180fe1a19f.jpeg"
   },
   {
+    _id: "6",
     nameRU: "Soul Power",
     duration: 92,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_images_5bfcbf36e6.jpeg"
+    trailerLink: "https://www.youtube.com/watch?v=8OprNgiOq-I",
+    url: "https://api.nomoreparties.co/uploads/images_5bfcbf36e6.jpeg"
   },
   {
+    _id: "7",
     nameRU: "196 ударов в минуту",
     duration: 60,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_zagruzhennoe_1_fd5faff237.jpeg"
+    trailerLink: "https://www.youtube.com/watch?v=GsDRVpdgNJ4",
+    url: "https://api.nomoreparties.co/uploads/zagruzhennoe_1_fd5faff237.jpeg"
   },
   {
+    _id: "8",
     nameRU: "Баллада о Дженезисе и Леди Джей",
     duration: 65,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_ballad_of_genesis_and_lady_jaye_10c27afa96.jpeg"
+    trailerLink: "https://www.youtube.com/watch?v=d8BX2FDrogo",
+    url: "https://api.nomoreparties.co/uploads/ballad_of_genesis_and_lady_jaye_10c27afa96.jpeg"
   },
   {
+    _id: "9",
     nameRU: "Виллалобос",
     duration: 110,
-    url: "https://api.nomoreparties.co/uploads/thumbnail_590x400_2eccd40a93.jpeg"
+    trailerLink: "https://www.kinopoisk.ru/film/586534/video/56500/",
+    url: "https://api.nomoreparties.co/uploads/590x400_2eccd40a93.jpeg"
   },
 ]
