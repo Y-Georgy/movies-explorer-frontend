@@ -64,8 +64,12 @@
     background-color: inherit;
   }
 
+  .nav-page__icon-burger:hover {
+    cursor: pointer;
+  }
+
   .nav-page__overlay {
-    display: flex;
+    display: none;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -83,8 +87,8 @@
     position: absolute;
     right: 0;
     top: 0;
-    min-width: 520px;
-    min-height: 100vh;
+    bottom: 0;
+    left: 248px;
     background-color: #202020;
     padding-bottom: 90px;
     box-sizing: border-box;
@@ -103,6 +107,10 @@
     background-repeat: no-repeat;
     background-size: 22px;
     background-color: inherit;
+  }
+
+  .nav-page__icon-close:hover {
+    cursor: pointer;
   }
 
   .nav-page__btn-account {
@@ -124,6 +132,10 @@
   .nav-page__link_active {
     border-bottom: 2px solid #fff;
   }
+
+  .nav-page__overlay_display_flex {
+    display: flex;
+  }
 }
 
 @media (max-width: 767px) {
@@ -134,7 +146,7 @@
   }
 
   .nav-page__container {
-    min-width: 100vw;
+    left: 0;
   }
 
   .nav-page__icon-close {

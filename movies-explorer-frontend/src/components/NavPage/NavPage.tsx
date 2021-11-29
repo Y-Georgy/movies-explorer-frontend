@@ -1,14 +1,24 @@
 import './NavPage.css'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 const NavPage: React.FC = () => {
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
+
+  function handleClickOpenMenu() {
+    setIsOpenMenu(true);
+  }
+
+  function handleClickCloseMenu() {
+    setIsOpenMenu(false);
+  }
+
     return (
       <nav className="nav-page">
-        <button className="nav-page__icon-burger" />
-        <div className="nav-page__overlay">
+        <button className="nav-page__icon-burger" onClick={handleClickOpenMenu}/>
+        <div className={`nav-page__overlay${isOpenMenu ? ' nav-page__overlay_display_flex' : '' }`}>
           <div className="nav-page__container">
-            <button className="nav-page__icon-close" />
+            <button className="nav-page__icon-close" onClick={handleClickCloseMenu}/>
             <Link to="/" className="nav-page__link">
               Главная
             </Link>
