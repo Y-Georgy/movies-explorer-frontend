@@ -7,7 +7,7 @@ function Movies() {
   return (
     <>
       <Header children={<NavPage />} bgcolor="grey"/>
-      <main className="Movies">
+      <main className="movies">
         <SearchForm />
       </main>
     </>
