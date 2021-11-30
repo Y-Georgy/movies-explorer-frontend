@@ -2,8 +2,8 @@ import './MoviesCardList.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { initialCards } from '../../utils/initialCards';
 import { ICard } from '../../utils/initialCards';
-import React, { useEffect, useState } from 'react';
-import { JsxEmit } from 'typescript';
+import React, { useState } from 'react';
+import Preloader from '../Preloader/Preloader';
 
 function MoviesCardList() {
 const [movies, setMovies] = useState<ICard[]>(initialCards)
@@ -47,6 +47,7 @@ function handleClickBtnAnother() {
   return (
       <section className="movies-card-list">
         <ul className="movies-card-list__container">{renderCards()}</ul>
+        {/* <Preloader /> */}
         {movies.length > quantityRenderMovies && <button  className="movies-card-list__button-another" onClick={handleClickBtnAnother}>Ещё</button>}
       </section>
   )
