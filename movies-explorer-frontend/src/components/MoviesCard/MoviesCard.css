@@ -11,7 +11,7 @@
 
 .movies-card__image {
   max-width: 364px;
-  max-height: 203px;
+  height: 203px;
   object-fit: contain;
   object-position: center;
   margin-bottom: 16px;
@@ -54,14 +54,14 @@
   cursor: pointer;
 }
 
-.movies-card__save {
+.movies-card__save_active {
   background-image: url(../../images/btn-save-active.svg);
 }
 
 @media (max-width: 1279px) {
   .movies-card__image {
     max-width: 339px;
-    max-height: 190px;
+    height: 190px;
     margin-bottom: 14px;
   }
 
@@ -84,7 +84,7 @@
 @media (max-width: 767px) {
   .movies-card__image {
     max-width: 300px;
-    max-height: 168px;
+    height: 168px;
   }
 
   .movies-card__name {
