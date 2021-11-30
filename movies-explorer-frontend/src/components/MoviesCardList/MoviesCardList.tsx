@@ -3,9 +3,10 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import { initialCards } from '../../utils/initialCards';
 import { ICard } from '../../utils/initialCards';
 import React, { useState } from 'react';
-import Preloader from '../Preloader/Preloader';
+// import Preloader from '../Preloader/Preloader';
 
 function MoviesCardList() {
+// eslint-disable-next-line
 const [movies, setMovies] = useState<ICard[]>(initialCards)
 const [quantityRenderMovies, setQuantityRenderMovies] = useState<number>(6)
 
