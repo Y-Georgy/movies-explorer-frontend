@@ -51,5 +51,55 @@
 }
 
 .movies-card__save {
+  cursor: pointer;
+}
+
+.movies-card__save {
   background-image: url(../../images/btn-save-active.svg);
+}
+
+@media (max-width: 1279px) {
+  .movies-card__image {
+    max-width: 339px;
+    max-height: 190px;
+    margin-bottom: 14px;
+  }
+
+  .movies-card__name {
+    font-size: 13px;
+    line-height: 16px;
+    margin: 0 14px 15px;
+  }
+
+  .movies-card__save {
+    top: 208px;
+    right: 22px;
+  }
+
+  .movies-card__duration {
+    margin: 0 14px 14px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movies-card__image {
+    max-width: 300px;
+    max-height: 168px;
+  }
+
+  .movies-card__name {
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 14px;
+  }
+
+  .movies-card__duration {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  .movies-card__save {
+    top: 185px;
+    right: 18px;
+  }
 }
