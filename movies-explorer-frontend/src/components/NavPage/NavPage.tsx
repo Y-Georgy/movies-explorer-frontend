@@ -1,6 +1,6 @@
 import './NavPage.css'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 
 const NavPage: React.FC = () => {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -19,18 +19,18 @@ const NavPage: React.FC = () => {
         <div className={`nav-page__overlay${isOpenMenu ? ' nav-page__overlay_display_flex' : '' }`}>
           <div className="nav-page__container">
             <button className="nav-page__icon-close" onClick={handleClickCloseMenu}/>
-            <Link to="/" className="nav-page__link">
+            <NavLink to="/" className={({ isActive }) => (`nav-page__link ${isActive && 'nav-page__link_active'}`)}>
               Главная
-            </Link>
-            <Link to="/movies" className="nav-page__link nav-page__link_active">
+            </NavLink>
+            <NavLink to="/movies" className={({ isActive }) => (`nav-page__link ${isActive && 'nav-page__link_active'}`)}>
               Фильмы
-            </Link>
-            <Link to="/saved-movies" className="nav-page__link">
+            </NavLink>
+            <NavLink to="/saved-movies" className={({ isActive }) => (`nav-page__link ${isActive && 'nav-page__link_active'}`)}>
               Сохранённые фильмы
-            </Link>
-            <Link to="/profile" className="nav-page__btn-account">
+            </NavLink>
+            <NavLink to="/profile" className={({ isActive }) => (`nav-page__btn-account ${isActive && 'nav-page__link_active'}`)}>
               Аккаунт
-            </Link>
+            </NavLink>
           </div>
         </div>
       </nav>
