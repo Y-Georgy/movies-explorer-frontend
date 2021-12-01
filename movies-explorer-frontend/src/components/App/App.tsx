@@ -5,6 +5,7 @@ import Movies from '../Movies/Movies';
 import Footer from '../Footer/Footer';
 import NavAuth from '../NavAuth/NavAuth';
 import Register from '../Register/Register';
+import Login from '../Login/Login';
 import './App.css';
 import { Route, Routes } from 'react-router-dom'
 
@@ -22,6 +23,7 @@ function App() {
           </>
         } />
         <Route path="/signup" element={<Register />} />
+        <Route path="/signin" element={<Login />} />
       </Routes>
     </>
   );
