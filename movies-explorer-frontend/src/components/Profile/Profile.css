@@ -70,10 +70,12 @@
   color: #fff;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
 .form-profile__submit-button:disabled {
   opacity: .5;
+  cursor: default;
 }
 
 .profile__logout-button {
@@ -85,6 +87,10 @@
   border: 0;
   background-color: transparent;
   color: #EE3465;
+}
+
+.profile__logout-button:hover {
+  cursor: pointer;
 }
 
 @media (max-width: 1023px) {
