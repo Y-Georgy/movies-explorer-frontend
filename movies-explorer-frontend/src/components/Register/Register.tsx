@@ -8,7 +8,7 @@ function Register() {
   return (
       <main className="register">
         <Link to="/" className="register__link-logo">
-          <img src={logo} alt="Логотип Movies-explorer" className="register__logo" />
+          <img src={logo} alt="Логотип Movies-explorer" className="logo" />
         </Link>
         <h1 className="register__title">Добро пожаловать!</h1>
         <form className="form-user" name="form-register">
