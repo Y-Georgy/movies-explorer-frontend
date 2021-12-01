@@ -1,6 +1,4 @@
 import './Register.css'
-import Header from '../Header/Header';
-import NavPage from '../NavPage/NavPage';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 
