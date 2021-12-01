@@ -6,6 +6,8 @@
   min-height: 100vh;
   margin: 0 auto;
   justify-content: center;
+  padding: 70px 0;
+  box-sizing: border-box;
 }
 
 .register__link-logo {
@@ -60,6 +62,7 @@
 
   .register__title {
     margin-bottom: 80px;
+    text-align: center;
   }
 
   .register__text {
