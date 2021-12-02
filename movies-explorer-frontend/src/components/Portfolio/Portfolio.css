@@ -43,8 +43,9 @@
 }
 
 .portfolio__link:hover {
-  opacity: 0.5;
-  transition: opacity 0.3s ease-out;
+  opacity: .9;
+  background-color: #272727;
+  transition: opacity .5s ease-out, background-color .5s ease-out;
 }
 
 @media (max-width: 1023px) {

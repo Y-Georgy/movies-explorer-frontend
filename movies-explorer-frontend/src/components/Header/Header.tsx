@@ -12,7 +12,7 @@ const Header = ({ children, bgcolor }: Props) => {
   return (
     <header className={`header header_bgcolor_${bgcolor}`}>
       <section className="header__container">
-        <Link to="/"><img src={logo} alt="Логотип Movies-explorer" className="header__logo" /></Link>
+        <Link to="/"><img src={logo} alt="Логотип Movies-explorer" className="logo" /></Link>
         {children}
       </section>
     </header>

@@ -26,6 +26,13 @@
   color: #fff;
 }
 
+.nav-tab__anchor-link:hover {
+  opacity: .7;
+  text-decoration: none;
+  transition: opacity .5s ease-out;
+
+}
+
 .nav-tab__link:last-of-type {
   margin-right: 0;
 }

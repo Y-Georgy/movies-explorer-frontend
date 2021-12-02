@@ -11,6 +11,11 @@
   text-decoration: none;
 }
 
+.navigation__link:hover {
+  opacity: .7;
+  transition: opacity .5s ease-out;
+}
+
 .navigation__link:first-of-type {
   display: none;
 }
@@ -33,6 +38,11 @@
   background-repeat: no-repeat;
   background-position: 12px center;
   background-size: 12px 14px;
+}
+
+.navigation__btn-account:hover {
+  opacity: .7;
+  transition: opacity .5s ease-out;
 }
 
 .navigation__icon-burger {

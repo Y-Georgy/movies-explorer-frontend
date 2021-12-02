@@ -12,7 +12,7 @@ function Profile() {
           <label className="form-profile__label">
             Имя
             <input type="text" className="form-profile__input" name="name" value="Виталий" />
-            </label>
+          </label>
 
           <label className="form-profile__label">
             E-mail

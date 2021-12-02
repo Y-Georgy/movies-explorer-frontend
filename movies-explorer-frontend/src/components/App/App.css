@@ -3,6 +3,13 @@
   height: 38px;
 }
 
+.logo:hover {
+  cursor: pointer;
+  transform: rotate(-360deg);
+  opacity: .8;
+  transition: opacity .5s ease-out, transform .5s ease-out;
+}
+
 .form-user {
   display: flex;
   flex-direction: column;
