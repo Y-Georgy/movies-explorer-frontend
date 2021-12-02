@@ -15,12 +15,12 @@ function Footer() {
             </a>
           </li>
           <li className="footer__link-elem">
-            <a href="https://github.com/Y-Georgy" target="_blank" rel="noreferrer" className="footer__link">
+            <a href="https://github.com/Yandex-Practicum" target="_blank" rel="noreferrer" className="footer__link">
               Github
             </a>
           </li>
           <li className="footer__link-elem">
-            <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" className="footer__link">
+            <a href="https://www.facebook.com/yandex.practicum/" target="_blank" rel="noreferrer" className="footer__link">
               Facebook
             </a>
           </li>

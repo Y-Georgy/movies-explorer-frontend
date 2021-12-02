@@ -20,7 +20,10 @@
   font-size: 13px;
   line-height: 16px;
   font-weight: 500;
-  text-decoration: underline;
+}
+
+.nav-tab__anchor-link {
+  color: #fff;
 }
 
 .nav-tab__link:last-of-type {

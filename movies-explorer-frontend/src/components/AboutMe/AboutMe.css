@@ -42,6 +42,8 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
+  color: #fff;
+  text-decoration: none;
 }
 
 .about-me__social-link:last-child {
