@@ -18,7 +18,7 @@
   height: 20px;
   -webkit-appearance: none;
   outline: none;
-  background-color: rgba(170, 170, 170, 0.2);
+  background-color: #343434;
   border-radius: 20px;
   transition: background-color .4s ease-out;
   cursor: pointer;
@@ -35,7 +35,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #A0A0A0;
   top: 2px;
   left: 2px;
   transition: left .4s ease-out;
@@ -43,6 +43,7 @@
 
 .switch__input:checked::before {
   left: 18px;
+  background-color: #fff;
 }
 
 @media (max-width: 767px) {
