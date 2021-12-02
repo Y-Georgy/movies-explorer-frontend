@@ -1,6 +1,6 @@
 import './SavedMovies.css'
 import Header from '../Header/Header';
-import NavPage from '../NavPage/NavPage';
+import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
@@ -8,7 +8,7 @@ import Footer from '../Footer/Footer';
 function SavedMovies() {
   return (
     <>
-      <Header children={<NavPage />} bgcolor="grey"/>
+      <Header children={<Navigation />} bgcolor="grey"/>
       <main className="movies">
         <SearchForm />
         <MoviesCardList />

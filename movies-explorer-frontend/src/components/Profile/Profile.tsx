@@ -1,11 +1,11 @@
 import './Profile.css'
 import Header from '../Header/Header';
-import NavPage from '../NavPage/NavPage';
+import Navigation from '../Navigation/Navigation';
 
 function Profile() {
   return (
     <>
-      <Header children={<NavPage />} bgcolor="grey"/>
+      <Header children={<Navigation />} bgcolor="grey"/>
       <main className="profile">
         <h1 className="profile__title">Привет, Виталий!</h1>
          <form className="form-profile" name="form-profile">
