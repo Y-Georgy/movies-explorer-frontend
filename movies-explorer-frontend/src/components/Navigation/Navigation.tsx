@@ -9,16 +9,18 @@ const Navigation: React.FC = () => {
     setIsOpenMenu(true);
   }
 
-  function handleClickCloseMenu() {
-    setIsOpenMenu(false);
+  function handleClickCloseMenu(evt: any) {
+    if(evt.target === evt.currentTarget || evt.target.classList.contains('navigation__icon-close') ) {
+      setIsOpenMenu(false);
+    }
   }
 
   return (
     <nav className="navigation">
       <button className="navigation__icon-burger" onClick={handleClickOpenMenu}/>
-      <div className={`navigation__overlay${isOpenMenu ? ' navigation__overlay_display_flex' : '' }`}>
+      <div className={`navigation__overlay${isOpenMenu ? ' navigation__overlay_display_flex' : '' }`} onClick={handleClickCloseMenu}>
         <div className="navigation__container">
-          <button className="navigation__icon-close" onClick={handleClickCloseMenu}/>
+          <button className="navigation__icon-close" />
           <NavLink to="/" className={({ isActive }) => (`navigation__link ${isActive && 'navigation__link_active'}`)}>
             Главная
           </NavLink>
