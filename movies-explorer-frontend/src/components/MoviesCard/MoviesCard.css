@@ -17,6 +17,11 @@
   margin-bottom: 16px;
 }
 
+.movies-card__image:hover {
+  opacity: 0.7;
+  transition: opacity 0.5s ease-out;
+}
+
 .movies-card__name {
   align-self: flex-start;
   font-weight: 500;
@@ -51,6 +56,8 @@
 
 .movies-card__button:hover {
   cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.5s ease-out;
 }
 
 .movies-card__button_icon_save {

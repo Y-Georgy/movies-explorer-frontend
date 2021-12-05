@@ -20,6 +20,11 @@
   margin-bottom: 26px;
 }
 
+.search-form__query:focus {
+  outline: 1px solid rgba(170, 170, 170, 0.5);
+  transition: outline 0.5s ease-out;
+}
+
 .search-form__btn-submit {
   position: absolute;
   top: 80px;
@@ -37,6 +42,8 @@
 
 .search-form__btn-submit:hover {
   cursor: pointer;
+  opacity: .7;
+  transition: opacity .5s ease-out;
 }
 
 .search-form__line {

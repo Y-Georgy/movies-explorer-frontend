@@ -76,6 +76,8 @@
 
   .navigation__icon-burger:hover {
     cursor: pointer;
+    opacity: 0.7;
+    transition: opacity .5s ease-out;
   }
 
   .navigation__overlay {
@@ -121,6 +123,8 @@
 
   .navigation__icon-close:hover {
     cursor: pointer;
+    opacity: 0.7;
+    transition: opacity .5s ease-out;
   }
 
   .navigation__btn-account {
