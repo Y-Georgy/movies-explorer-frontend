@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 interface Props {
   children: React.ReactNode,
-  bgcolor: string
+  bgcolor: 'grey' | 'blue'
 }
 
 const Header = ({ children, bgcolor }: Props) => {

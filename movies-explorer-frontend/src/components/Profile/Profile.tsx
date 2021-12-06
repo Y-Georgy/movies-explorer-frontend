@@ -1,7 +1,6 @@
 import './Profile.css'
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
-import { useState } from 'react';
 
 function Profile() {
   return (

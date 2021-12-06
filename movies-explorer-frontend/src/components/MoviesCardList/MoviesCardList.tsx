@@ -16,9 +16,9 @@ function MoviesCardList() {
   // времменный эффект для тестирования верстки
   useEffect(() => {
       setIsLoading(true);
-      function testLoading() {
+      function testLoading(): void {
         let content = [];
-        for (let i = 0; i < quantityRenderMovies && i < movies.length; i++) {
+        for (let i: number = 0; i < quantityRenderMovies && i < movies.length; i++) {
           content.push(<MoviesCard
               key={movies[i]._id}
               movieCard={movies[i]}
@@ -35,7 +35,7 @@ function MoviesCardList() {
       setTimeout(testLoading, 2000); // убрать по готовности API
   }, [quantityRenderMovies]);
 
-  function handleClickBtnAnother() {
+  function handleClickBtnAnother(): void {
     setQuantityRenderMovies(quantityRenderMovies + 6);
   }
 
