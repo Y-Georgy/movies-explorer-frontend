@@ -19,7 +19,7 @@ function Profile() {
             <input type="email" className="form-profile__input" name="email" value="pochta@yandex.ru" />
           </label>
 
-          <span className="form-profile__error">При обновлении профиля произошла ошибка.</span>
+          <span className="form-profile__error"></span>
           <button type="submit" className="form-profile__submit-button">Редактировать</button>
         </form>
         <button type="button" className="profile__logout-button">Выйти из аккаунта</button>

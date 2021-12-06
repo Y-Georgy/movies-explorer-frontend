@@ -4,6 +4,11 @@
   align-items: center;
 }
 
+.switch:hover {
+  opacity: 0.9;
+  transition: opacity 0.5s ease-out;
+}
+
 .switch__label {
   margin-left: 14px;
   font-weight: 400;

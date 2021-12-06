@@ -39,6 +39,10 @@
   margin-bottom: 80px;
 }
 
+.form-profile__label:hover {
+  cursor: pointer;
+}
+
 .form-profile__input {
   font-weight: 400;
   font-size: 11px;
@@ -78,6 +82,11 @@
   cursor: pointer;
 }
 
+.form-profile__submit-button:hover {
+  opacity: 0.7;
+  transition: opacity 0.5s ease-out;
+}
+
 .form-profile__submit-button:disabled {
   opacity: .5;
   cursor: default;
@@ -96,6 +105,8 @@
 
 .profile__logout-button:hover {
   cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.5s ease-out;
 }
 
 @media (max-width: 1023px) {

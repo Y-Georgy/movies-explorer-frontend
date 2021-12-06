@@ -41,6 +41,11 @@
   margin-left: 6px;
 }
 
+.login__link:hover {
+  opacity: 0.8;
+  transition: opacity 0.5s ease-out;
+}
+
 @media (max-width: 1023px) {
   .login__link-logo {
     margin-bottom: 48px;
