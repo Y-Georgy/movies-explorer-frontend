@@ -1,6 +1,7 @@
 import './Profile.css'
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
+import { useState } from 'react';
 
 function Profile() {
   return (
@@ -11,12 +12,12 @@ function Profile() {
          <form className="form-profile" name="form-profile">
           <label className="form-profile__label">
             Имя
-            <input type="text" className="form-profile__input" name="name" value="Виталий" minLength={2} maxLength={30}/>
+            <input type="text" className="form-profile__input" name="name" placeholder="Ваше имя" minLength={2} maxLength={30}/>
           </label>
 
           <label className="form-profile__label">
             E-mail
-            <input type="email" className="form-profile__input" name="email" value="pochta@yandex.ru" />
+            <input type="email" className="form-profile__input" name="email" placeholder="Ваш e-mail" />
           </label>
 
           <span className="form-profile__error"></span>

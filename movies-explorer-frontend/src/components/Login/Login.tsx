@@ -12,14 +12,14 @@ function Login() {
         <form className="form-user" name="form-login">
 
           <label htmlFor="email" className="form-user__label">E-mail</label>
-          <input required id="email" type="email" className="form-user__input" name="email" />
+          <input required id="email" type="email" className="form-user__input" name="email" placeholder="Введите имя" />
           <span className="form-user__error email-input-error"></span>
 
           <label htmlFor="password" className="form-user__label">Пароль</label>
-          <input required id="password" type="password" className="form-user__input" name="password"  minLength={8}/>
+          <input required id="password" type="password" className="form-user__input" name="password"  minLength={8} placeholder="Введите пароль" />
           <span className="form-user__error password-input-error"></span>
 
-          <button type="submit" className="form-user__submit-button form-user__submit-button_margin_top">Войти</button>
+          <button type="submit" className="form-user__submit-button form-user__submit-button_margin_top" >Войти</button>
         </form>
         <p className="login__text">
           Ещё не зарегистрированы?
