@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
 import { ICard } from '../../utils/initialCards';
+import iconMovie from '../../images/icon-movie.svg'
 
 interface Props {
   movieCard: ICard
@@ -38,7 +39,12 @@ const MoviesCard = ({ movieCard }: Props) => {
   return (
     <li className="movies-card">
       <a href={movieCard.trailerLink} target="_blank" rel="noreferrer">
-        <img src={movieCard.url} alt="Обложка фильма" className="movies-card__image" />
+        <img src={
+          movieCard.image.url
+            ? `https://api.nomoreparties.co${movieCard.image.url}`
+            : iconMovie
+          }
+          alt="Обложка фильма" className="movies-card__image" />
       </a>
       <p className="movies-card__name">{movieCard.nameRU}</p>
       <p className="movies-card__duration">{getTimeFromMins()}</p>
