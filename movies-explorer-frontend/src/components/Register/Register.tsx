@@ -11,7 +11,7 @@ function Register() {
         <h1 className="register__title">Добро пожаловать!</h1>
         <form className="form-user" name="form-register">
           <label htmlFor="name" className="form-user__label">Имя</label>
-          <input required id="name" type="text" className="form-user__input" name="name" />
+          <input required id="name" type="text" className="form-user__input" name="name" minLength={2} maxLength={30} />
           <span className="form-user__error name-input-error"></span>
 
           <label htmlFor="email" className="form-user__label">E-mail</label>
@@ -19,7 +19,7 @@ function Register() {
           <span className="form-user__error email-input-error"></span>
 
           <label htmlFor="password" className="form-user__label">Пароль</label>
-          <input required id="password" type="password" className="form-user__input" name="password" />
+          <input required id="password" type="password" className="form-user__input" name="password" minLength={8}/>
           <span className="form-user__error password-input-error"></span>
 
           <button type="submit" className="form-user__submit-button">Зарегистрироваться</button>

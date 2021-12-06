@@ -11,7 +11,7 @@ function Profile() {
          <form className="form-profile" name="form-profile">
           <label className="form-profile__label">
             Имя
-            <input type="text" className="form-profile__input" name="name" value="Виталий" />
+            <input type="text" className="form-profile__input" name="name" value="Виталий" minLength={2} maxLength={30}/>
           </label>
 
           <label className="form-profile__label">

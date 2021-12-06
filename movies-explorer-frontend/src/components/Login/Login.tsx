@@ -16,7 +16,7 @@ function Login() {
           <span className="form-user__error email-input-error"></span>
 
           <label htmlFor="password" className="form-user__label">Пароль</label>
-          <input required id="password" type="password" className="form-user__input" name="password" />
+          <input required id="password" type="password" className="form-user__input" name="password"  minLength={8}/>
           <span className="form-user__error password-input-error"></span>
 
           <button type="submit" className="form-user__submit-button form-user__submit-button_margin_top">Войти</button>
