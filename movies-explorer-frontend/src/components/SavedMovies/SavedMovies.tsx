@@ -5,13 +5,24 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
-function SavedMovies() {
+interface Props {
+  handleSubmitSearch: () => void,
+  movies: [],
+  isLoadingMovies: boolean,
+  massageSearchMovies: string
+}
+
+function SavedMovies({ handleSubmitSearch, movies, isLoadingMovies, massageSearchMovies }: Props) {
   return (
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="movies">
-        <SearchForm />
-        <MoviesCardList />
+        <SearchForm onSubmit={handleSubmitSearch} />
+        <MoviesCardList
+          movies={movies}
+          isLoadingMovies={isLoadingMovies}
+          massageSearchMovies={massageSearchMovies}
+        />
         <Footer />
       </main>
     </>
