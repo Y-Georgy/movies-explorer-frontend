@@ -55,7 +55,7 @@ const arrMovies = [
 ]
 
 export interface ICard {
-  _id: string;
+  id: number;
   nameRU: string,
   duration: number,
   trailerLink: string,
@@ -66,7 +66,7 @@ export interface ICard {
 
 export const initialCards: ICard[] = [
   {
-    _id: "1",
+    id: 1,
     nameRU: "Роллинг Стоунз» в изгнании",
     duration: 61,
     trailerLink: "https://www.youtube.com/watch?v=UXcqcdYABFw",
@@ -75,7 +75,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "2",
+    id: 2,
     nameRU: "Marsli",
     duration: 80,
     trailerLink: "https://www.youtube.com/watch?v=JMZ8DO9F4Mo",
@@ -84,7 +84,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "3",
+    id: 3,
     nameRU: "Без обратного пути",
     duration: 104,
     trailerLink: "https://www.youtube.com/watch?v=6iYxdghpJZY",
@@ -93,7 +93,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "4",
+    id: 4,
     nameRU: "Фавела на взрыве",
     duration: 80,
     trailerLink: "https://www.youtube.com/watch?v=Cugdwa7mndA",
@@ -102,7 +102,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "5",
+    id: 5,
     nameRU: "Постеры, сошедшие со стен",
     duration: 32,
     trailerLink: "https://www.youtube.com/watch?v=VFMU3crg0sM",
@@ -111,7 +111,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "6",
+    id: 6,
     nameRU: "Soul Power",
     duration: 92,
     trailerLink: "https://www.youtube.com/watch?v=8OprNgiOq-I",
@@ -120,7 +120,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "7",
+    id: 7,
     nameRU: "196 ударов в минуту",
     duration: 60,
     trailerLink: "https://www.youtube.com/watch?v=GsDRVpdgNJ4",
@@ -129,7 +129,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "8",
+    id: 8,
     nameRU: "Баллада о Дженезисе и Леди Джей",
     duration: 65,
     trailerLink: "https://www.youtube.com/watch?v=d8BX2FDrogo",
@@ -138,7 +138,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "9",
+    id: 9,
     nameRU: "Виллалобос",
     duration: 110,
     trailerLink: "https://www.kinopoisk.ru/film/586534/video/56500/",
@@ -147,7 +147,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "10",
+    id: 10,
     nameRU: "Роллинг Стоунз» в изгнании",
     duration: 61,
     trailerLink: "https://www.youtube.com/watch?v=UXcqcdYABFw",
@@ -156,7 +156,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "11",
+    id: 11,
     nameRU: "Marsli",
     duration: 80,
     trailerLink: "https://www.youtube.com/watch?v=JMZ8DO9F4Mo",
@@ -165,7 +165,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "12",
+    id: 12,
     nameRU: "Без обратного пути",
     duration: 104,
     trailerLink: "https://www.youtube.com/watch?v=6iYxdghpJZY",
@@ -174,7 +174,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "13",
+    id: 13,
     nameRU: "Фавела на взрыве",
     duration: 80,
     trailerLink: "https://www.youtube.com/watch?v=Cugdwa7mndA",
@@ -183,7 +183,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "14",
+    id: 14,
     nameRU: "Постеры, сошедшие со стен",
     duration: 32,
     trailerLink: "https://www.youtube.com/watch?v=VFMU3crg0sM",
@@ -192,7 +192,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "15",
+    id: 15,
     nameRU: "Soul Power",
     duration: 92,
     trailerLink: "https://www.youtube.com/watch?v=8OprNgiOq-I",
@@ -201,7 +201,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "16",
+    id: 16,
     nameRU: "196 ударов в минуту",
     duration: 60,
     trailerLink: "https://www.youtube.com/watch?v=GsDRVpdgNJ4",
@@ -210,7 +210,7 @@ export const initialCards: ICard[] = [
     }
   },
   {
-    _id: "17",
+    id: 17,
     nameRU: "Баллада о Дженезисе и Леди Джей",
     duration: 65,
     trailerLink: "https://www.youtube.com/watch?v=d8BX2FDrogo",
