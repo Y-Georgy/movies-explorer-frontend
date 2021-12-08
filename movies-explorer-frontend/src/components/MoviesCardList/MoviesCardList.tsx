@@ -14,71 +14,55 @@ interface Props {
 function MoviesCardList({ movies, isLoadingMovies, massageSearchMovies }: Props) {
   const [quantityRenderMovies, setQuantityRenderMovies] = useState<number>(6)
   const [quantityRenderMoviesAnother, setQuantityRenderMoviesAnother] = useState<number>(6)
-  const [renderMovies, setRenderMovies] = useState<React.ReactNode[]>([])
-  const [readyMovies, setReadyMovies] = useState<ICard[]>([])
+  const [renderMovies, setRenderMovies] = useState<ICard[]>([])
 
-  useEffect(() => {
-    function checkClientWindow() {
-      const windowWidth = window.innerWidth;
-      if (windowWidth >= 1280) {
-        setQuantityRenderMovies(12);
-        setQuantityRenderMoviesAnother(3);
-        return
-      } else if (windowWidth < 1280 && windowWidth >= 768) {
-        setQuantityRenderMovies(8);
-        setQuantityRenderMoviesAnother(2);
-      } else if (windowWidth < 768) {
-        setQuantityRenderMovies(5);
-        setQuantityRenderMoviesAnother(2);
-      }
-      // console.log('resizeTimeOut', windowWidth);
+  function checkClientWindow() {
+    const windowWidth = window.innerWidth;
+    if (windowWidth >= 1280) return 'l'
+    else if (windowWidth < 768) return 's'
+    else return 'm'
     }
-    checkClientWindow();
 
-    let timeOutCheckClientWindow: any;
-    window.addEventListener('resize', () => {
-      clearTimeout(timeOutCheckClientWindow);
-      timeOutCheckClientWindow = setTimeout(checkClientWindow, 1000)
-    })
-  }, [])
+  function getQuantityToFirstLoad(screen: 's' | 'm' | 'l') {
+    if (screen === 's') return 5
+    else if (screen === 'm') return 8
+    else return 12
+  }
 
-  // function getContentForRenderMovies() {
-  //   let content = [];
-  //   for (let i = 0; i < quantityRenderMovies && i < movies.length; i++) {
-  //     content.push(<MoviesCard
-  //         key={movies[i]._id}
-  //         movieCard={movies[i]}
-  //       />);
-  //   }
-  //   return content;
-  // }
+  function getQuantityToLoadAnother(screen: 's' | 'm' | 'l') {
+    if (screen === 'l') return 3
+    else return 2
+  }
 
-  // времменный эффект для тестирования верстки
+  // RESIZE ведь не нужен???
   // useEffect(() => {
-  //   const contentForRenderMovies = getContentForRenderMovies();
-  //   setRenderMovies(contentForRenderMovies);
-  // }, [movies]);
+  //   let timeOutCheckClientWindow: any;
+  //   window.addEventListener('resize', () => {
+  //     clearTimeout(timeOutCheckClientWindow);
+  //     timeOutCheckClientWindow = setTimeout(checkClientWindow, 1000)
+  //   })
+  // }, [])
 
-  function handleClickBtnAnother(): void {
-    // setQuantityRenderMovies(quantityRenderMovies + quantityRenderMoviesAnother);
-    // const contentForRenderMovies = getContentForRenderMovies();
-    // setRenderMovies(contentForRenderMovies);
-    const newQuantityRenderMovies = quantityRenderMovies + quantityRenderMoviesAnother;
-    const moviesToRender = movies.slice(0, newQuantityRenderMovies);
-    setReadyMovies(moviesToRender);
-    setQuantityRenderMovies(newQuantityRenderMovies);
+  function handleClickBtnAnother() {
+    const quantityRenderedMovies = renderMovies.length;
+    const clientScreen = checkClientWindow();
+    const quantityToAdd = getQuantityToLoadAnother(clientScreen);
+    const quantityToRender = quantityRenderedMovies + quantityToAdd;
+    const moviesToRender = movies.slice(0, quantityToRender);
+    setRenderMovies(moviesToRender);
   }
 
   useEffect(() => {
-    const moviesToRender = movies.slice(0, quantityRenderMovies);
-    setReadyMovies(moviesToRender);
+    const clientScreen = checkClientWindow();
+    const quantityToFirstLoad = getQuantityToFirstLoad(clientScreen);
+    const moviesToRender = movies.slice(0, quantityToFirstLoad);
+    setRenderMovies(moviesToRender);
   }, [movies])
 
   return (
     <section className="movies-card-list">
       <ul className="movies-card-list__container">
-        {/* {renderMovies} */}
-        {readyMovies.length !== 0 && readyMovies.map((movie) => {
+        {renderMovies.length !== 0 && renderMovies.map((movie) => {
           return <MoviesCard
             key={movie.id}
             movieCard={movie}
