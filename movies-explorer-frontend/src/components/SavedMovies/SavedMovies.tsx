@@ -4,22 +4,23 @@ import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
+import { ICard } from '../../utils/initialCards';
 
 interface Props {
-  handleSubmitSearch: () => void,
-  movies: [],
+  handleSubmitSearch: (searchValue: string) => void,
+  filtredMovies: ICard[],
   isLoadingMovies: boolean,
   massageSearchMovies: string
 }
 
-function SavedMovies({ handleSubmitSearch, movies, isLoadingMovies, massageSearchMovies }: Props) {
+function SavedMovies({ handleSubmitSearch, filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
   return (
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="movies">
         <SearchForm onSubmit={handleSubmitSearch} />
         <MoviesCardList
-          movies={movies}
+          filtredMovies={filtredMovies}
           isLoadingMovies={isLoadingMovies}
           massageSearchMovies={massageSearchMovies}
         />

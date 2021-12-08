@@ -12,23 +12,31 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import { moviesApi } from '../../vendor/MoviesApi';
+import { ICard } from '../../utils/initialCards';
 
 function App() {
-  const [movies, setMovies] = useState<[]>([]);
+  const [allMovies, setAllMovies] = useState<ICard[]>([]);
+  const [filtredMovies, setFiltredMovies] = useState<ICard[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [massageSearchMovies, setMassageSearchMovies] = useState<string>('');
 
-  function handleSubmitSearch() {
+  function filterMovies(searchQuery: string) {
+    return allMovies.filter((movie) => (movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())))
+  }
+
+  function handleSubmitSearch(searchQuery: string) {
     setMassageSearchMovies('');
     setIsLoadingMovies(true);
     moviesApi.getMovies()
       .then((res) => {
-        if (res.length === 0) {
+        setAllMovies(res);
+        localStorage.setItem('movies', JSON.stringify(res));
+        const filtredMovies = filterMovies(searchQuery);
+        if (filtredMovies.length === 0) {
           setMassageSearchMovies('Ничего не найдено');
         }
-        localStorage.setItem('movies', JSON.stringify(res));
         setIsLoadingMovies(false);
-        setMovies(res);
+        setFiltredMovies(filtredMovies);
       })
       .catch((err) => {
         console.log(err);
@@ -38,9 +46,13 @@ function App() {
   }
 
   useEffect(() => {
+
+  }, [allMovies])
+
+  useEffect(() => {
     const localMovies = localStorage.getItem('movies');
     if (localMovies) {
-      setMovies(JSON.parse(localMovies))
+      setAllMovies(JSON.parse(localMovies))
     }
   }, [])
 
@@ -57,14 +69,14 @@ function App() {
         <Route path="/movies" element={
           <Movies
             handleSubmitSearch={handleSubmitSearch}
-            movies={movies}
+            filtredMovies={filtredMovies}
             isLoadingMovies={isLoadingMovies}
             massageSearchMovies={massageSearchMovies}
           />} />
         <Route path="/saved-movies" element={
           <SavedMovies
             handleSubmitSearch={handleSubmitSearch}
-            movies={movies}
+            filtredMovies={filtredMovies}
             isLoadingMovies={isLoadingMovies}
             massageSearchMovies={massageSearchMovies}
           />} />

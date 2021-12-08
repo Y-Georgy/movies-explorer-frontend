@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react';
 import Preloader from '../Preloader/Preloader';
 
 interface Props {
-  movies: ICard[],
+  filtredMovies: ICard[],
   isLoadingMovies: boolean,
   massageSearchMovies: string
 }
 
-function MoviesCardList({ movies, isLoadingMovies, massageSearchMovies }: Props) {
+function MoviesCardList({ filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
   const [renderMovies, setRenderMovies] = useState<ICard[]>([])
 
   function checkClientWindow() {
@@ -36,16 +36,16 @@ function MoviesCardList({ movies, isLoadingMovies, massageSearchMovies }: Props)
     const clientScreen = checkClientWindow();
     const quantityToAdd = getQuantityToLoadAnother(clientScreen);
     const quantityToRender = quantityRenderedMovies + quantityToAdd;
-    const moviesToRender = movies.slice(0, quantityToRender);
+    const moviesToRender = filtredMovies.slice(0, quantityToRender);
     setRenderMovies(moviesToRender);
   }
 
   useEffect(() => {
     const clientScreen = checkClientWindow();
     const quantityToFirstLoad = getQuantityToFirstLoad(clientScreen);
-    const moviesToRender = movies.slice(0, quantityToFirstLoad);
+    const moviesToRender = filtredMovies.slice(0, quantityToFirstLoad);
     setRenderMovies(moviesToRender);
-  }, [movies])
+  }, [filtredMovies])
 
   return (
     <section className="movies-card-list">
@@ -59,7 +59,7 @@ function MoviesCardList({ movies, isLoadingMovies, massageSearchMovies }: Props)
       </ul>
       {isLoadingMovies && <Preloader />}
       {massageSearchMovies && <span className="movies-card-list__content-not-found">{massageSearchMovies}</span>}
-      {movies.length > renderMovies.length && <button  className="movies-card-list__button-another" onClick={handleClickBtnAnother}>Ещё</button>}
+      {filtredMovies.length > renderMovies.length && <button  className="movies-card-list__button-another" onClick={handleClickBtnAnother}>Ещё</button>}
     </section>
   )
 }
