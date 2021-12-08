@@ -1,5 +1,3 @@
-import React from "react";
-
 interface IOptionMoviesApi {
   baseUrl: string,
   headers: { 'Content-Type': string }
