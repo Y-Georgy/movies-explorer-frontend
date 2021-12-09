@@ -76,6 +76,16 @@
   border: none;
 }
 
+.form-user__submit-button:disabled {
+  opacity: 0.5;
+  background-color: #2F2F2F;
+}
+
+.form-user__submit-button:disabled:hover {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .form-user__submit-button_margin_top {
   margin-top: 157px;
 }
