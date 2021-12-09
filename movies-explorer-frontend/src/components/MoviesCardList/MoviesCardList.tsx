@@ -4,29 +4,31 @@ import { ICard } from '../../utils/initialCards';
 import React, { useEffect, useState } from 'react';
 import Preloader from '../Preloader/Preloader';
 
+type UserScreen = 's' | 'm' | 'l';
 interface Props {
   filtredMovies: ICard[],
   isLoadingMovies: boolean,
   massageSearchMovies: string
 }
 
+
 function MoviesCardList({ filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
   const [renderMovies, setRenderMovies] = useState<ICard[]>([])
 
-  function checkClientWindow() {
+  function checkClientWindow(): UserScreen {
     const windowWidth = window.innerWidth;
     if (windowWidth >= 1280) return 'l'
     else if (windowWidth < 768) return 's'
     else return 'm'
   }
 
-  function getQuantityToFirstLoad(screen: 's' | 'm' | 'l') {
+  function getQuantityToFirstLoad(screen: UserScreen) {
     if (screen === 's') return 5
     else if (screen === 'm') return 8
     else return 12
   }
 
-  function getQuantityToLoadAnother(screen: 's' | 'm' | 'l') {
+  function getQuantityToLoadAnother(screen: UserScreen) {
     if (screen === 'l') return 3
     else return 2
   }
