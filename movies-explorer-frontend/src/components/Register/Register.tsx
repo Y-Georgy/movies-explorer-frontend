@@ -3,23 +3,8 @@ import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
 
-interface IForm {
-  values: {
-    name: string,
-    email: string,
-    password: string,
-  },
-  errors: {
-    name: string,
-    email: string,
-    password: string,
-  } ,
-  isValid: boolean,
-  handleChange: (evt: any) => void
-}
-
 function Register() {
-  const { values, errors, isValid, handleChange }: IForm = UserFormValidator()
+  const { values, errors, isValid, handleChange } = UserFormValidator()
 
   return (
       <main className="register">

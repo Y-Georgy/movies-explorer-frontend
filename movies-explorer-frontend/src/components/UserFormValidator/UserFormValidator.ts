@@ -1,18 +1,24 @@
 import { useState, useEffect } from "react";
 import validator from 'validator'
 
+interface IUserData {
+  name: string,
+  email: string,
+  password: string,
+}
+
 export function UserFormValidator() {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<IUserData>({
     name: '',
     email: '',
     password: ''
   });
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<IUserData>({
     name: '',
     email: '',
     password: ''
   });
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState<boolean>(false);
 
   const handleChange = (evt: any) => {
     const target = evt.target;
@@ -27,9 +33,9 @@ export function UserFormValidator() {
   }
 
   useEffect(() => {
-    const isNameValid = checkNameValid(values.name);
-    const isEmailValid = validator.isEmail(values.email);
-    const isPasswordValid = values.password.length >= 8;
+    const isNameValid: boolean = checkNameValid(values.name);
+    const isEmailValid: boolean = validator.isEmail(values.email);
+    const isPasswordValid: boolean = values.password.length >= 8;
 
     setErrors({
       name: isNameValid ? '' : 'Имя может содержать только латиницу, кириллицу, пробел или дефис',
