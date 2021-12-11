@@ -2,11 +2,17 @@ import './Register.css'
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
+import { useEffect } from 'react';
 
 function Register() {
-  const { values, errors, isValid, handleChange } = UserFormValidator()
+  const { values, isValidName, isValidEmail, isValidPassword, handleChange } = UserFormValidator()
 
-  return (
+
+  useEffect(() => {
+    console.log('values', values);
+  }, [values])
+
+   return (
       <main className="register">
         <Link to="/" className="register__link-logo">
           <img src={logo} alt="Логотип Movies-explorer" className="logo" />
@@ -23,7 +29,9 @@ function Register() {
             placeholder="Введите имя"
             onChange={handleChange}
           />
-          <span className="form-user__error name-input-error">{values.name && errors.name}</span>
+          <span className="form-user__error name-input-error">
+            {(values.name && !isValidName(values.name)) && 'Имя может содержать только латиницу, кириллицу, пробел или дефис'}
+          </span>
 
           <label htmlFor="email" className="form-user__label">E-mail</label>
           <input
@@ -35,7 +43,9 @@ function Register() {
             placeholder="Введите e-mail"
             onChange={handleChange}
           />
-          <span className="form-user__error email-input-error">{values.email && errors.email}</span>
+          <span className="form-user__error email-input-error">
+            {(values.email && !isValidEmail(values.email)) && 'Введён не корректный e-mail'}
+          </span>
 
           <label htmlFor="password" className="form-user__label">Пароль</label>
           <input
@@ -47,12 +57,14 @@ function Register() {
             placeholder="Введите пароль"
             onChange={handleChange}
             />
-          <span className="form-user__error password-input-error">{values.password && errors.password}</span>
+          <span className="form-user__error password-input-error">
+            {(values.password && !isValidPassword(values.password)) && 'Пароль должен содержать минимум 8 знаков'}
+          </span>
 
           <button
             type="submit"
             className="form-user__submit-button"
-            disabled={!isValid}
+            // disabled={isValidName(values.name)}
           >
             Зарегистрироваться
           </button>
