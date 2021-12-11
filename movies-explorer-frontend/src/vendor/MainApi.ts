@@ -5,6 +5,12 @@ interface IOptionMainApi {
   }
 }
 
+interface IRegisterUserData {
+  name: string,
+  email: string,
+  password: string
+}
+
 class MainApi {
   _baseUrl: string;
   _headers: { 'Content-Type': string; };
@@ -61,6 +67,15 @@ class MainApi {
       credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(user), // передавать name и email
+    }).then(this._handleResponse)
+  }
+
+  register(userData: IRegisterUserData) {
+    return fetch(`${this._baseUrl}/signup/`, {
+      method: 'post',
+      // credentials: 'include',
+      headers: this._headers,
+      body: JSON.stringify(userData),
     }).then(this._handleResponse)
   }
 }
