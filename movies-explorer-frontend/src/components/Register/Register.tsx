@@ -2,15 +2,9 @@ import './Register.css'
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
-import { useEffect } from 'react';
 
 function Register() {
-  const { values, isValidName, isValidEmail, isValidPassword, handleChange } = UserFormValidator()
-
-
-  useEffect(() => {
-    console.log('values', values);
-  }, [values])
+  const { values, validators, handleChange, isValidForm } = UserFormValidator()
 
    return (
       <main className="register">
@@ -30,7 +24,7 @@ function Register() {
             onChange={handleChange}
           />
           <span className="form-user__error name-input-error">
-            {(values.name && !isValidName(values.name)) && 'Имя может содержать только латиницу, кириллицу, пробел или дефис'}
+            {!validators.isValidName && 'Имя может содержать только латиницу, кириллицу, пробел или дефис'}
           </span>
 
           <label htmlFor="email" className="form-user__label">E-mail</label>
@@ -44,7 +38,7 @@ function Register() {
             onChange={handleChange}
           />
           <span className="form-user__error email-input-error">
-            {(values.email && !isValidEmail(values.email)) && 'Введён не корректный e-mail'}
+            {!validators.isValidEmail && 'Введён не корректный e-mail'}
           </span>
 
           <label htmlFor="password" className="form-user__label">Пароль</label>
@@ -58,13 +52,13 @@ function Register() {
             onChange={handleChange}
             />
           <span className="form-user__error password-input-error">
-            {(values.password && !isValidPassword(values.password)) && 'Пароль должен содержать минимум 8 знаков'}
+            {!validators.isValidPassword && 'Пароль должен содержать минимум 8 знаков'}
           </span>
 
           <button
             type="submit"
             className="form-user__submit-button"
-            // disabled={isValidName(values.name)}
+            disabled={!isValidForm() || values.name === '' || values.email === '' || values.password === ''}
           >
             Зарегистрироваться
           </button>
