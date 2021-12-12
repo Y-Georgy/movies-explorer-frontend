@@ -65,8 +65,14 @@
   min-height: 12px;
 }
 
+ .form-user__submit-error {
+  text-align: center;
+  margin-top: 43px;
+  margin-bottom: 14px;
+ }
+
 .form-user__submit-button {
-  margin: 69px 0 16px;
+  margin: 0 0 16px;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
@@ -104,10 +110,13 @@
   }
 
   .form-user__submit-button {
-    margin-top: auto;
     margin-bottom: 14px;
     font-size: 12px;
     line-height: 15px;
     padding-top: 15px;
   }
+
+  .form-user__submit-error {
+    margin-top: auto;
+   }
 }
