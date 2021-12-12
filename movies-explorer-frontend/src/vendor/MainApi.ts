@@ -11,6 +11,11 @@ interface IRegisterUserData {
   password: string
 }
 
+interface ILoginUserData {
+  email: string,
+  password: string
+}
+
 class MainApi {
   _baseUrl: string;
   _headers: { 'Content-Type': string; };
@@ -26,7 +31,7 @@ class MainApi {
       return res.json()
     }
     return Promise.reject(`Произошла ошибка: ${res.status}`)
-  }
+  };
 
   getMovies() {
     return fetch(`${this._baseUrl}/movies`, {
@@ -71,9 +76,26 @@ class MainApi {
   }
 
   register(userData: IRegisterUserData) {
-    return fetch(`${this._baseUrl}/signup/`, {
+    return fetch(`${this._baseUrl}/signup`, {
       method: 'post',
       // credentials: 'include',
+      headers: this._headers,
+      body: JSON.stringify(userData),
+    }).then((res) => {
+      console.log('ress', res)
+      if (res.ok) {
+        return res.json()
+      } else if (res.status === 409) {
+        return Promise.reject(`Пользователь с таким Email уже существует`)
+      }
+      return Promise.reject(`Произошла ошибка: ${res.status}`)
+    })
+  }
+
+  login(userData: ILoginUserData) {
+    return fetch(`${this._baseUrl}/signin`, {
+      method: 'post',
+      credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(userData),
     }).then(this._handleResponse)
@@ -81,7 +103,10 @@ class MainApi {
 }
 
 export const mainApi = new MainApi({
-  baseUrl: "https://api.movie.nomoredomains.rocks",
+  // production
+  // baseUrl: "https://api.movie.nomoredomains.rocks",
+  // local
+  baseUrl: "http://localhost:3001",
   headers: {
     'Content-Type': 'application/json',
   },
