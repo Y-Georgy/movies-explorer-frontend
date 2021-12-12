@@ -1,13 +1,17 @@
 import './Register.css'
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
 import { mainApi } from '../../vendor/MainApi';
 import { useEffect, useState } from 'react';
+import { IDataLogin } from '../App/App';
 
-function Register() {
-  const navigate = useNavigate();
+interface Props {
+  onSubmit: ( dataLogin: IDataLogin ) => void,
+  errorLoginMessage: string
+}
+
+function Register({ onSubmit, errorLoginMessage }: Props) {
   const { values, validators, handleChange, isValidForm } = UserFormValidator()
   const [errorRegister, setErrorRegister] = useState<string>('')
 
@@ -15,16 +19,16 @@ function Register() {
     e.preventDefault()
     mainApi.register(values)
       .then((res) => {
-        mainApi.login({ email: values.email, password: values.password })
-          .then(res => {
-            navigate('/movies');
-          })
-          .catch(err => {setErrorRegister(err)});
+        onSubmit({ email: values.email, password: values.password })
       })
       .catch((err) => {
         setErrorRegister(err);
       })
   }
+
+  useEffect(() => {
+    setErrorRegister(errorLoginMessage)
+  }, [errorLoginMessage])
 
   useEffect(() => {
     setErrorRegister('')

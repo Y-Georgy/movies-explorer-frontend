@@ -97,7 +97,7 @@ function App() {
               isLoadingMovies={isLoadingMovies}
               massageSearchMovies={massageSearchMovies}
             />} />
-          <Route path="/signup" element={<Register />} />
+          <Route path="/signup" element={<Register onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
           <Route path="/signin" element={<Login onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFoundPage />} />
