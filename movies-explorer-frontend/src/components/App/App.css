@@ -71,6 +71,10 @@
   margin-bottom: 14px;
  }
 
+ .form-user__submit-error_margin_top {
+  margin-top: 142px;
+}
+
 .form-user__submit-button {
   margin: 0 0 16px;
   font-weight: 500;
@@ -93,9 +97,7 @@
   cursor: default;
 }
 
-.form-user__submit-button_margin_top {
-  margin-top: 157px;
-}
+
 
 .form-user__submit-button:hover {
   cursor: pointer;
