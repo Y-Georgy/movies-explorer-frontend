@@ -2,23 +2,30 @@ import './Login.css'
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
-import { mainApi } from '../../vendor/MainApi';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { IDataLogin } from '../App/App'
 
-function Login() {
-  const navigate = useNavigate();
+interface props {
+  onSubmit: ( dataLogin: IDataLogin ) => void,
+  errorLoginMessage: string
+}
+
+function Login( { onSubmit, errorLoginMessage }: props) {
   const { values, validators, handleChange, isValidForm } = UserFormValidator()
   const [errorLogin, setErrorLogin] = useState<string>('')
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    mainApi.login({ email: values.email, password: values.password })
-      .then(res => {
-        navigate('/movies');
-      })
-      .catch(err => {setErrorLogin(err)});
+    onSubmit({
+      email: values.email,
+      password: values.password
+    })
   }
+
+  useEffect(() => {
+    setErrorLogin(errorLoginMessage)
+  }, [errorLoginMessage])
+
 
   useEffect(() => {
     setErrorLogin('')

@@ -13,12 +13,20 @@ import Login from '../Login/Login';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import { moviesApi } from '../../vendor/MoviesApi';
 import { ICard } from '../../utils/initialCards';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'
+import { mainApi } from '../../vendor/MainApi';
+import { useNavigate } from 'react-router-dom';
+
+export interface IDataLogin { email: string, password: string }
 
 function App() {
+  const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState<ICard[]>([]);
   const [filtredMovies, setFiltredMovies] = useState<ICard[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [massageSearchMovies, setMassageSearchMovies] = useState<string>('');
+  const [currentUser, setCurrentUser] = useState({})
+  const [errorLoginMessage, setErrorLoginMessage] = useState<string>('')
 
   function filterMovies(searchQuery: string) {
     return allMovies.filter((movie) => (movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())))
@@ -46,45 +54,55 @@ function App() {
   }
 
   useEffect(() => {
-
-  }, [allMovies])
-
-  useEffect(() => {
     const localMovies = localStorage.getItem('movies');
     if (localMovies) {
       setAllMovies(JSON.parse(localMovies))
     }
   }, [])
 
+  function handleSubmitLogin({ email, password }: IDataLogin) {
+    setErrorLoginMessage('')
+    mainApi.login({ email, password })
+    .then(res => {
+      setCurrentUser({email, password})
+      navigate('/movies');
+    })
+    .catch(err => {
+      setErrorLoginMessage(err)
+    });
+  }
+
   return (
     <>
-      <Routes>
-        <Route path="/" element={
-          <>
-            <Header children={<NavAuth />} bgcolor="blue" />
-            <Main />
-            <Footer />
-          </>
-        } />
-        <Route path="/movies" element={
-          <Movies
-            handleSubmitSearch={handleSubmitSearch}
-            filtredMovies={filtredMovies}
-            isLoadingMovies={isLoadingMovies}
-            massageSearchMovies={massageSearchMovies}
-          />} />
-        <Route path="/saved-movies" element={
-          <SavedMovies
-            handleSubmitSearch={handleSubmitSearch}
-            filtredMovies={filtredMovies}
-            isLoadingMovies={isLoadingMovies}
-            massageSearchMovies={massageSearchMovies}
-          />} />
-        <Route path="/signup" element={<Register />} />
-        <Route path="/signin" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <CurrentUserContext.Provider value={currentUser}>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Header children={<NavAuth />} bgcolor="blue" />
+              <Main />
+              <Footer />
+            </>
+          } />
+          <Route path="/movies" element={
+            <Movies
+              handleSubmitSearch={handleSubmitSearch}
+              filtredMovies={filtredMovies}
+              isLoadingMovies={isLoadingMovies}
+              massageSearchMovies={massageSearchMovies}
+            />} />
+          <Route path="/saved-movies" element={
+            <SavedMovies
+              handleSubmitSearch={handleSubmitSearch}
+              filtredMovies={filtredMovies}
+              isLoadingMovies={isLoadingMovies}
+              massageSearchMovies={massageSearchMovies}
+            />} />
+          <Route path="/signup" element={<Register />} />
+          <Route path="/signin" element={<Login onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </CurrentUserContext.Provider>
     </>
   );
 }
