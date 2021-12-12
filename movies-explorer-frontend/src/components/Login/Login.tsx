@@ -2,9 +2,27 @@ import './Login.css'
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
+import { mainApi } from '../../vendor/MainApi';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 function Login() {
+  const navigate = useNavigate();
   const { values, validators, handleChange, isValidForm } = UserFormValidator()
+  const [errorLogin, setErrorLogin] = useState<string>('')
+
+  function handleSubmit(e: any) {
+    e.preventDefault();
+    mainApi.login({ email: values.email, password: values.password })
+      .then(res => {
+        navigate('/movies');
+      })
+      .catch(err => {setErrorLogin(err)});
+  }
+
+  useEffect(() => {
+    setErrorLogin('')
+  }, [values])
 
   return (
       <main className="login">
@@ -12,7 +30,7 @@ function Login() {
           <img src={logo} alt="Логотип Movies-explorer" className="logo" />
         </Link>
         <h1 className="login__title">Рады видеть!</h1>
-        <form className="form-user" name="form-login" noValidate>
+        <form className="form-user" name="form-login" onSubmit={handleSubmit} noValidate>
 
           <label htmlFor="email" className="form-user__label">E-mail</label>
           <input
@@ -41,9 +59,12 @@ function Login() {
             {!validators.isValidPassword && 'Пароль должен содержать минимум 8 знаков'}
           </span>
 
+          <span className="form-user__error form-user__submit-error  form-user__submit-error_margin_top">
+            {errorLogin}
+          </span>
           <button
             type="submit"
-            className="form-user__submit-button form-user__submit-button_margin_top"
+            className="form-user__submit-button"
             disabled={!isValidForm() || values.email === '' || values.password === ''}
           >
             Войти
