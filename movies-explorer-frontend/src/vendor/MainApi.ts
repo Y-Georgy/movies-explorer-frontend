@@ -82,7 +82,6 @@ class MainApi {
       headers: this._headers,
       body: JSON.stringify(userData),
     }).then((res) => {
-      console.log('ress', res)
       if (res.ok) {
         return res.json()
       } else if (res.status === 409) {
@@ -98,7 +97,14 @@ class MainApi {
       credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(userData),
-    }).then(this._handleResponse)
+    }).then((res) => {
+      if (res.ok) {
+        return res.json()
+      } else if (res.status === 401) {
+        return Promise.reject(`Неправильные почта или пароль`)
+      }
+      return Promise.reject(`Произошла ошибка: ${res.status}`)
+    })
   }
 }
 
