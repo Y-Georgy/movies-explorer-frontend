@@ -1,19 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
-import { ICard } from '../../utils/initialCards';
 import iconMovie from '../../images/icon-movie.svg'
+import { mainApi } from '../../vendor/MainApi'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+
+export interface IMovie {
+  country: string,
+  description: string,
+  director: string,
+  duration: number,
+  image: {
+    url: string,
+    formats: {
+      thumbnail: {
+        url: string
+      }
+    }
+  }
+  nameEN: string,
+  nameRU: string,
+  trailerLink: string,
+  year: string,
+  thumbnail: string,
+  movieId: number,
+  id: number
+}
 
 interface Props {
-  movieCard: ICard
+  movieCard: IMovie
 }
 
 const MoviesCard = ({ movieCard }: Props) => {
   const [isSavedMovie, setIsSavedMovie] = useState<Boolean>(false)
   const { pathname } = useLocation();
+  const currentUser = React.useContext(CurrentUserContext)
 
   function handleClickBtnSave(): void {
-    setIsSavedMovie(!isSavedMovie);
+    if (!isSavedMovie) {
+      mainApi.postMovies({
+        country: movieCard.country,
+        description: movieCard.description,
+        director: movieCard.director,
+        duration: movieCard.duration,
+        image: `https://api.nomoreparties.co${movieCard.image.url}`,
+        nameEN: movieCard.nameEN,
+        nameRU: movieCard.nameRU,
+        trailer: movieCard.trailerLink,
+        year: movieCard.year,
+        thumbnail: `https://api.nomoreparties.co${movieCard.image.formats.thumbnail.url}`,
+        movieId: movieCard.id
+      })
+      .then(res => setIsSavedMovie(!isSavedMovie))
+      .catch(err => console.log(err))
+      } else {
+
+      }
   }
 
   function getTimeFromMins(): string {
