@@ -5,6 +5,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import { IMovie } from '../MoviesCard/MoviesCard';
+import React from 'react';
 
 interface Props {
   handleSubmitSearch: (searchValue: string) => void,
@@ -13,7 +14,7 @@ interface Props {
   massageSearchMovies: string
 }
 
-function SavedMovies({ handleSubmitSearch, filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
+function SavedMovies ({ handleSubmitSearch, filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
   return (
     <>
       <Header children={<Navigation />} bgcolor="grey"/>

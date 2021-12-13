@@ -102,20 +102,28 @@ function App() {
               <Footer />
             </>
           } />
-          <Route path="/movies" element={
-            <Movies
+          <Route
+            path="/movies"
+            element={<ProtectedRoute
+              component={Movies}
+              loggedIn={loggedIn}
               handleSubmitSearch={handleSubmitSearch}
               filtredMovies={filtredMovies}
               isLoadingMovies={isLoadingMovies}
               massageSearchMovies={massageSearchMovies}
-            />} />
-          <Route path="/saved-movies" element={
-            <SavedMovies
+            />}
+          />
+          <Route
+            path="/saved-movies"
+            element={<ProtectedRoute
+              loggedIn={loggedIn}
+              component={SavedMovies}
               handleSubmitSearch={handleSubmitSearch}
               filtredMovies={filtredMovies}
               isLoadingMovies={isLoadingMovies}
               massageSearchMovies={massageSearchMovies}
-            />} />
+            />}
+          />
           <Route path="/signup" element={<Register onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
           <Route path="/signin" element={<Login onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
           <Route
