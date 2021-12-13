@@ -1,19 +1,18 @@
 import './MoviesCardList.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { ICard } from '../../utils/initialCards';
+import { IMovie } from '../MoviesCard/MoviesCard';
 import React, { useEffect, useState } from 'react';
 import Preloader from '../Preloader/Preloader';
 
 type UserScreen = 's' | 'm' | 'l';
 interface Props {
-  filtredMovies: ICard[],
+  filtredMovies: IMovie[],
   isLoadingMovies: boolean,
   massageSearchMovies: string
 }
 
-
 function MoviesCardList({ filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
-  const [renderMovies, setRenderMovies] = useState<ICard[]>([])
+  const [renderMovies, setRenderMovies] = useState<IMovie[]>([])
 
   function checkClientWindow(): UserScreen {
     const windowWidth = window.innerWidth;

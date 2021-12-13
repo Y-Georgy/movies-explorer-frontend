@@ -5,12 +5,12 @@ import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
 import { useEffect, useState } from 'react';
 import { IDataLogin } from '../App/App'
 
-interface props {
+interface Props {
   onSubmit: ( dataLogin: IDataLogin ) => void,
   errorLoginMessage: string
 }
 
-function Login( { onSubmit, errorLoginMessage }: props) {
+function Login( { onSubmit, errorLoginMessage }: Props) {
   const { values, validators, handleChange, isValidForm } = UserFormValidator()
   const [errorLogin, setErrorLogin] = useState<string>('')
 
