@@ -12,21 +12,23 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import { moviesApi } from '../../vendor/MoviesApi';
-import { ICard } from '../../utils/initialCards';
+import { IMovie } from '../MoviesCard/MoviesCard';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import { mainApi } from '../../vendor/MainApi';
 import { useNavigate } from 'react-router-dom';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 export interface IDataLogin { email: string, password: string }
 
 function App() {
   const navigate = useNavigate();
-  const [allMovies, setAllMovies] = useState<ICard[]>([]);
-  const [filtredMovies, setFiltredMovies] = useState<ICard[]>([]);
+  const [allMovies, setAllMovies] = useState<IMovie[]>([]);
+  const [filtredMovies, setFiltredMovies] = useState<IMovie[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [massageSearchMovies, setMassageSearchMovies] = useState<string>('');
   const [currentUser, setCurrentUser] = useState({})
   const [errorLoginMessage, setErrorLoginMessage] = useState<string>('')
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
   function filterMovies(searchQuery: string) {
     return allMovies.filter((movie) => (movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())))
@@ -64,13 +66,30 @@ function App() {
     setErrorLoginMessage('')
     mainApi.login({ email, password })
     .then(res => {
-      setCurrentUser({email, password})
+      checkUserToken();
       navigate('/movies');
     })
     .catch(err => {
       setErrorLoginMessage(err)
     });
   }
+
+  function checkUserToken() {
+    mainApi.getProfile()
+      .then(res => auth(res.data))
+      .catch(err => console.log(err))
+  }
+
+  // АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ
+  function auth(dataUser: any) {
+    setLoggedIn(true)
+    setCurrentUser(dataUser)
+  }
+
+  // ПРОВЕРКА ПОЛЬЗОВАТЕЛЯ ПРИ ВХОДЕ
+  useEffect(() => {
+    checkUserToken();
+  }, [])
 
   return (
     <>
@@ -99,7 +118,10 @@ function App() {
             />} />
           <Route path="/signup" element={<Register onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
           <Route path="/signin" element={<Login onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={<ProtectedRoute component={Profile} loggedIn={loggedIn} />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </CurrentUserContext.Provider>
