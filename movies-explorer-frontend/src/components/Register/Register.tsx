@@ -2,7 +2,7 @@ import './Register.css'
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
-import { mainApi } from '../../vendor/MainApi';
+import { mainApi } from '../../utils/MainApi';
 import { useEffect, useState } from 'react';
 import { IDataLogin } from '../App/App';
 

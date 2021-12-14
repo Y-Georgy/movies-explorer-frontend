@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
 import iconMovie from '../../images/icon-movie.svg'
-import { mainApi } from '../../vendor/MainApi'
+import { mainApi } from '../../utils/MainApi'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { IMovie } from '../Movies/Movies';
 

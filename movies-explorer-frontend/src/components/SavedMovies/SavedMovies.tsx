@@ -4,16 +4,28 @@ import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
-import { mainApi } from '../../vendor/MainApi';
+import { mainApi } from '../../utils/MainApi';
 import { useEffect, useState } from 'react';
+import { filterMovies } from '../../utils/utils';
+import { IMovie } from '../Movies/Movies';
 
 function SavedMovies () {
-  const [userMovies, setUserMovies] = useState([]);
+  const [userMovies, setUserMovies] = useState<IMovie[]>([]);
   const [message, setMessage] = useState<string>('');
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
 
-  function handleSubmitSearch() {
-
+  function handleSubmitSearch(searchQuery: string) {
+    setMessage('');
+    if (searchQuery.length === 0) {
+      setMessage('Нужно ввести ключевое слово');
+    } else {
+      const filtredMovies = filterMovies(searchQuery, userMovies)
+      if (filtredMovies.length === 0) {
+        setMessage('Ничего не найдено');
+      } else {
+        setUserMovies(filtredMovies);
+      }
+    }
   }
 
   function getCurruntUserMovies() {
@@ -25,16 +37,12 @@ function SavedMovies () {
           setMessage('У Вас еще нет сохранённых фильмов');
         } else {
           setUserMovies(res.data);
-          console.log('userMovies', res.data)
-
         }
-        setIsLoadingMovies(false);
       })
       .catch((err) => {
-        console.log(err);
-        setIsLoadingMovies(false);
         setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
       })
+      .finally(() => setIsLoadingMovies(false))
   }
 
   useEffect(() => {
@@ -47,7 +55,7 @@ function SavedMovies () {
       <main className="movies">
         <SearchForm onSubmit={handleSubmitSearch} />
         <MoviesCardList
-          moviesArr={userMovies}
+          moviesArr={message.length === 0 ? userMovies : []}
           isLoadingMovies={isLoadingMovies}
           massageSearchMovies={message}
         />

@@ -13,7 +13,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
-import { mainApi } from '../../vendor/MainApi';
+import { mainApi } from '../../utils/MainApi';
 import { useNavigate } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 

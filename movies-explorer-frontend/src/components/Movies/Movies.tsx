@@ -5,8 +5,9 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import { useEffect, useState } from 'react';
-import { moviesApi } from '../../vendor/MoviesApi';
-import { mainApi } from '../../vendor/MainApi';
+import { moviesApi } from '../../utils/MoviesApi';
+import { mainApi } from '../../utils/MainApi';
+import { filterMovies } from '../../utils/utils';
 
 export interface IMovie {
   country: string,
@@ -24,15 +25,9 @@ export interface IMovie {
 }
 
 function Movies() {
-  const [allMovies, setAllMovies] = useState<IMovie[]>([]);
-  const [filtredMovies, setFiltredMovies] = useState<IMovie[]>([]);
-  const [currentUserMovies, setCurrentUserMovies] = useState<IMovie[]>([]);
+  const [preparedMovies, setPreparedMovies] = useState<IMovie[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [messageSearchMovies, setMessageSearchMovies] = useState<string>('');
-
-  function filterMovies(searchQuery: string, movies: IMovie[]) {
-    return movies.filter((movie) => (movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())))
-  }
 
   function formatMoviesArr(movies: any) {
     const newArrMovies = movies.map(((movie: any) => {
@@ -56,9 +51,8 @@ function Movies() {
 
   function checkLikedMovies(allMovies: any, userMovies: any) {
     const newMoviesArr = allMovies.map((movie: { movieId: any; }) => {
-      const newMovie = userMovies.find((userMovie: any) => userMovie.movieId === movie.movieId)
-      if (newMovie) return newMovie
-      // console.log(newMovie)
+      const userMovie = userMovies.find((userMovie: any) => userMovie.movieId === movie.movieId)
+      if (userMovie) return userMovie
       return movie
       })
     return newMoviesArr
@@ -70,38 +64,30 @@ function Movies() {
     } else {
       setMessageSearchMovies('');
       setIsLoadingMovies(true);
-      moviesApi.getMovies()
-        .then((allMovies) => {
-          const formattedMoviesArr = formatMoviesArr(allMovies)
-          mainApi.getMovies()
-            .then(userMovies => {
-              const comparedMovies = checkLikedMovies(formattedMoviesArr, userMovies.data)
-              const filtredMovies = filterMovies(searchQuery, comparedMovies);
-              if (filtredMovies.length === 0) {
-                setMessageSearchMovies('Ничего не найдено');
-              }
-              setIsLoadingMovies(false);
-              setFiltredMovies(filtredMovies);
-              console.log('filtredMovies', filtredMovies)
-            })
-            .catch(err => console.log(err))
 
-          setAllMovies(formattedMoviesArr);
-          localStorage.setItem('movies', JSON.stringify(formattedMoviesArr));
-
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsLoadingMovies(false);
-          setMessageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-        })
+      Promise.all([moviesApi.getMovies(), mainApi.getMovies()])
+      .then(([allMovies, userMovies]) => {
+        const formattedMoviesArr = formatMoviesArr(allMovies)
+        const comparedMovies = checkLikedMovies(formattedMoviesArr, userMovies.data)
+        const filtredMovies = filterMovies(searchQuery, comparedMovies);
+        if (filtredMovies.length === 0) {
+          setMessageSearchMovies('Ничего не найдено');
+        } else {
+          setPreparedMovies(filtredMovies);
+          localStorage.setItem('movies', JSON.stringify(filtredMovies));
+        }
+      })
+      .catch((err) => {
+        setMessageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+      })
+      .finally(() => setIsLoadingMovies(false))
     }
   }
 
   useEffect(() => {
     const localMovies = localStorage.getItem('movies');
     if (localMovies) {
-      setAllMovies(JSON.parse(localMovies))
+      setPreparedMovies(JSON.parse(localMovies))
     }
   }, [])
 
@@ -111,7 +97,7 @@ function Movies() {
       <main className="movies">
         <SearchForm onSubmit={handleSubmitSearch} />
         <MoviesCardList
-          moviesArr={filtredMovies}
+          moviesArr={preparedMovies}
           isLoadingMovies={isLoadingMovies}
           massageSearchMovies={messageSearchMovies}
         />
