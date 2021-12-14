@@ -6,36 +6,33 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import { useEffect, useState } from 'react';
 import { moviesApi } from '../../vendor/MoviesApi';
+import { mainApi } from '../../vendor/MainApi';
 
 export interface IMovie {
   country: string,
   description: string,
   director: string,
-  duration: string,
+  duration: number,
   image: string,
   nameEN: string,
   nameRU: string,
   trailer: string,
   year: string,
   thumbnail: string,
-  movieId: number
+  movieId: number,
+  _id?: string
 }
 
 function Movies() {
   const [allMovies, setAllMovies] = useState<IMovie[]>([]);
   const [filtredMovies, setFiltredMovies] = useState<IMovie[]>([]);
+  const [currentUserMovies, setCurrentUserMovies] = useState<IMovie[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [messageSearchMovies, setMessageSearchMovies] = useState<string>('');
 
-  function filterMovies(searchQuery: string) {
-    return allMovies.filter((movie) => (movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())))
+  function filterMovies(searchQuery: string, movies: IMovie[]) {
+    return movies.filter((movie) => (movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())))
   }
-
-  function getTimeFromMins(duration: any) {
-    const hours = Math.floor(duration/60);
-    const minutes = duration % 60;
-    return hours + 'ч ' + minutes + 'м';
-  };
 
   function formatMoviesArr(movies: any) {
     const newArrMovies = movies.map(((movie: any) => {
@@ -43,18 +40,28 @@ function Movies() {
         country: movie.country,
         description: movie.description,
         director: movie.director,
-        duration: getTimeFromMins(movie.duration),
+        duration: movie.duration,
         image: `https://api.nomoreparties.co${movie.image.url}`,
         nameEN: movie.nameEN,
         nameRU: movie.nameRU,
         trailer: movie.trailerLink,
         year: movie.year,
         thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
-        movieId: movie.id
+        movieId: movie.id,
       }
       return newMovie;
     }))
     return newArrMovies
+  }
+
+  function checkLikedMovies(allMovies: any, userMovies: any) {
+    const newMoviesArr = allMovies.map((movie: { movieId: any; }) => {
+      const newMovie = userMovies.find((userMovie: any) => userMovie.movieId === movie.movieId)
+      if (newMovie) return newMovie
+      // console.log(newMovie)
+      return movie
+      })
+    return newMoviesArr
   }
 
   function handleSubmitSearch(searchQuery: string) {
@@ -64,16 +71,24 @@ function Movies() {
       setMessageSearchMovies('');
       setIsLoadingMovies(true);
       moviesApi.getMovies()
-        .then((res) => {
-          const formattedMoviesArr = formatMoviesArr(res)
+        .then((allMovies) => {
+          const formattedMoviesArr = formatMoviesArr(allMovies)
+          mainApi.getMovies()
+            .then(userMovies => {
+              const comparedMovies = checkLikedMovies(formattedMoviesArr, userMovies.data)
+              const filtredMovies = filterMovies(searchQuery, comparedMovies);
+              if (filtredMovies.length === 0) {
+                setMessageSearchMovies('Ничего не найдено');
+              }
+              setIsLoadingMovies(false);
+              setFiltredMovies(filtredMovies);
+              console.log('filtredMovies', filtredMovies)
+            })
+            .catch(err => console.log(err))
+
           setAllMovies(formattedMoviesArr);
           localStorage.setItem('movies', JSON.stringify(formattedMoviesArr));
-          const filtredMovies = filterMovies(searchQuery);
-          if (filtredMovies.length === 0) {
-            setMessageSearchMovies('Ничего не найдено');
-          }
-          setIsLoadingMovies(false);
-          setFiltredMovies(filtredMovies);
+
         })
         .catch((err) => {
           console.log(err);
