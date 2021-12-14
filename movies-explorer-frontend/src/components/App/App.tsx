@@ -36,24 +36,28 @@ function App() {
   }
 
   function handleSubmitSearch(searchQuery: string) {
-    setMassageSearchMovies('');
-    setIsLoadingMovies(true);
-    moviesApi.getMovies()
-      .then((res) => {
-        setAllMovies(res);
-        localStorage.setItem('movies', JSON.stringify(res));
-        const filtredMovies = filterMovies(searchQuery);
-        if (filtredMovies.length === 0) {
-          setMassageSearchMovies('Ничего не найдено');
-        }
-        setIsLoadingMovies(false);
-        setFiltredMovies(filtredMovies);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoadingMovies(false);
-        setMassageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-      })
+    if (searchQuery.length === 0) {
+      setMassageSearchMovies('Нужно ввести ключевое слово');
+    } else {
+      setMassageSearchMovies('');
+      setIsLoadingMovies(true);
+      moviesApi.getMovies()
+        .then((res) => {
+          setAllMovies(res);
+          localStorage.setItem('movies', JSON.stringify(res));
+          const filtredMovies = filterMovies(searchQuery);
+          if (filtredMovies.length === 0) {
+            setMassageSearchMovies('Ничего не найдено');
+          }
+          setIsLoadingMovies(false);
+          setFiltredMovies(filtredMovies);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoadingMovies(false);
+          setMassageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+        })
+    }
   }
 
   useEffect(() => {

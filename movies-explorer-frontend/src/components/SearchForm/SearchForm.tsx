@@ -9,7 +9,7 @@ interface Props {
 function SearchForm({ onSubmit }: Props) {
   const [searchValue, setSearchValue] = useState<string>('')
 
-  function getMovies(evt: any) {
+  function handleSubmit(evt: any) {
     evt.preventDefault();
     onSubmit(searchValue);
   }
@@ -19,8 +19,8 @@ function SearchForm({ onSubmit }: Props) {
   }
 
   return (
-    <form method="GET" className="search-form" name="search" onSubmit={getMovies} >
-      <input className="search-form__query" placeholder="Фильм" type="text" required minLength={2} value={searchValue} onChange={handleChangeInputValue}/>
+    <form method="GET" className="search-form" name="search" onSubmit={handleSubmit} noValidate>
+      <input className="search-form__query" placeholder="Фильм" type="text" value={searchValue} onChange={handleChangeInputValue}/>
       <button type="submit" className="search-form__btn-submit">Поиск</button>
       <FilterCheckbox />
       <hr className="search-form__line"/>
