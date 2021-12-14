@@ -8,6 +8,7 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import Footer from '../Footer/Footer';
 import NavAuth from '../NavAuth/NavAuth';
+import Navigation from '../Navigation/Navigation';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
@@ -97,7 +98,10 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Header children={<NavAuth />} bgcolor="blue" />
+              <Header
+                children={loggedIn ? <Navigation /> : <NavAuth />}
+                bgcolor="blue"
+              />
               <Main />
               <Footer />
             </>
