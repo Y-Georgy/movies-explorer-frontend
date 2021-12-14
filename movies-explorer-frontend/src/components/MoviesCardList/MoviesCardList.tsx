@@ -1,17 +1,17 @@
 import './MoviesCardList.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { IMovie } from '../MoviesCard/MoviesCard';
+import { IMovie } from '../Movies/Movies';
 import React, { useEffect, useState } from 'react';
 import Preloader from '../Preloader/Preloader';
 
 type UserScreen = 's' | 'm' | 'l';
 interface Props {
-  filtredMovies: IMovie[],
+  moviesArr: IMovie[],
   isLoadingMovies: boolean,
   massageSearchMovies: string
 }
 
-function MoviesCardList({ filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
+function MoviesCardList({ moviesArr, isLoadingMovies, massageSearchMovies }: Props) {
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([])
 
   function checkClientWindow(): UserScreen {
@@ -37,30 +37,30 @@ function MoviesCardList({ filtredMovies, isLoadingMovies, massageSearchMovies }:
     const clientScreen = checkClientWindow();
     const quantityToAdd = getQuantityToLoadAnother(clientScreen);
     const quantityToRender = quantityRenderedMovies + quantityToAdd;
-    const moviesToRender = filtredMovies.slice(0, quantityToRender);
+    const moviesToRender = moviesArr.slice(0, quantityToRender);
     setRenderMovies(moviesToRender);
   }
 
   useEffect(() => {
     const clientScreen = checkClientWindow();
     const quantityToFirstLoad = getQuantityToFirstLoad(clientScreen);
-    const moviesToRender = filtredMovies.slice(0, quantityToFirstLoad);
+    const moviesToRender = moviesArr.slice(0, quantityToFirstLoad);
     setRenderMovies(moviesToRender);
-  }, [filtredMovies])
+  }, [moviesArr])
 
   return (
     <section className="movies-card-list">
       <ul className="movies-card-list__container">
         {renderMovies.length !== 0 && renderMovies.map((movie) => (
           <MoviesCard
-            key={movie.id}
+            key={movie.movieId}
             movieCard={movie}
           />
         ))}
       </ul>
       {isLoadingMovies && <Preloader />}
       {massageSearchMovies && <span className="movies-card-list__content-not-found">{massageSearchMovies}</span>}
-      {filtredMovies.length > renderMovies.length && <button  className="movies-card-list__button-another" onClick={handleClickBtnAnother}>Ещё</button>}
+      {moviesArr.length > renderMovies.length && <button  className="movies-card-list__button-another" onClick={handleClickBtnAnother}>Ещё</button>}
     </section>
   )
 }

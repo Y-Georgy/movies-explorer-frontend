@@ -4,28 +4,7 @@ import './MoviesCard.css'
 import iconMovie from '../../images/icon-movie.svg'
 import { mainApi } from '../../vendor/MainApi'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-
-export interface IMovie {
-  country: string,
-  description: string,
-  director: string,
-  duration: number,
-  image: {
-    url: string,
-    formats: {
-      thumbnail: {
-        url: string
-      }
-    }
-  }
-  nameEN: string,
-  nameRU: string,
-  trailerLink: string,
-  year: string,
-  thumbnail: string,
-  movieId: number,
-  id: number
-}
+import { IMovie } from '../Movies/Movies';
 
 interface Props {
   movieCard: IMovie
@@ -38,32 +17,14 @@ const MoviesCard = ({ movieCard }: Props) => {
 
   function handleClickBtnSave(): void {
     if (!isSavedMovie) {
-      mainApi.postMovies({
-        country: movieCard.country,
-        description: movieCard.description,
-        director: movieCard.director,
-        duration: movieCard.duration,
-        image: `https://api.nomoreparties.co${movieCard.image.url}`,
-        nameEN: movieCard.nameEN,
-        nameRU: movieCard.nameRU,
-        trailer: movieCard.trailerLink,
-        year: movieCard.year,
-        thumbnail: `https://api.nomoreparties.co${movieCard.image.formats.thumbnail.url}`,
-        movieId: movieCard.id
-      })
+      mainApi.postMovies(movieCard)
       .then(res => setIsSavedMovie(!isSavedMovie))
       .catch(err => console.log(err))
       } else {
 
       }
   }
-
-  function getTimeFromMins(): string {
-    const hours = Math.floor(movieCard.duration/60);
-    const minutes = movieCard.duration % 60;
-    return hours + 'ч ' + minutes + 'м';
-  };
-
+  console.log(movieCard)
   function handleClickBtnDelete() {
 
   }
@@ -80,19 +41,27 @@ const MoviesCard = ({ movieCard }: Props) => {
 
   return (
     <li className="movies-card">
-      <a href={movieCard.trailerLink} target="_blank" rel="noreferrer">
-        <img src={
-          movieCard.image.url
-            ? `https://api.nomoreparties.co${movieCard.image.url}`
-            : iconMovie
-          }
-          alt="Обложка фильма" className="movies-card__image" />
+      <a href={movieCard.trailer} target="_blank" rel="noreferrer">
+        <img src={movieCard.image ? movieCard.image : iconMovie} alt="Обложка фильма" className="movies-card__image" />
       </a>
       <p className="movies-card__name">{movieCard.nameRU}</p>
-      <p className="movies-card__duration">{getTimeFromMins()}</p>
+      <p className="movies-card__duration">{movieCard.duration}</p>
       {getButton()}
     </li>
   )
 }
 
 export default MoviesCard;
+
+
+// country: movie.country,
+// description: movie.description,
+// director: movie.director,
+// duration: getTimeFromMins(movie.duration),
+// image: `https://api.nomoreparties.co${movie.image.url}`,
+// nameEN: movie.nameEN,
+// nameRU: movie.nameRU,
+// trailer: movie.trailerLink,
+// year: movie.year,
+// thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+// movieId: movie.id

@@ -4,26 +4,52 @@ import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
-import { IMovie } from '../MoviesCard/MoviesCard';
-import React from 'react';
+import { mainApi } from '../../vendor/MainApi';
+import { useEffect, useState } from 'react';
 
-interface Props {
-  handleSubmitSearch: (searchValue: string) => void,
-  filtredMovies: IMovie[],
-  isLoadingMovies: boolean,
-  massageSearchMovies: string
-}
+function SavedMovies () {
+  const [userMovies, setUserMovies] = useState([]);
+  const [message, setMessage] = useState<string>('');
+  const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
 
-function SavedMovies ({ handleSubmitSearch, filtredMovies, isLoadingMovies, massageSearchMovies }: Props) {
+  function handleSubmitSearch() {
+
+  }
+
+  function getCurruntUserMovies() {
+    setIsLoadingMovies(true);
+    setMessage('');
+    mainApi.getMovies()
+      .then((res) => {
+        if (res.data.length === 0) {
+          setMessage('У Вас еще нет сохранённых фильмов');
+        } else {
+          setUserMovies(res.data);
+          console.log('userMovies', res.data)
+
+        }
+        setIsLoadingMovies(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoadingMovies(false);
+        setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+      })
+  }
+
+  useEffect(() => {
+    getCurruntUserMovies();
+  }, [])
+
   return (
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="movies">
         <SearchForm onSubmit={handleSubmitSearch} />
         <MoviesCardList
-          filtredMovies={filtredMovies}
+          moviesArr={userMovies}
           isLoadingMovies={isLoadingMovies}
-          massageSearchMovies={massageSearchMovies}
+          massageSearchMovies={message}
         />
         <Footer />
       </main>
