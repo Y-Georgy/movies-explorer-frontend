@@ -21,7 +21,7 @@ export interface IMovie {
   movieId: number
 }
 
-function Movies({ }) {
+function Movies() {
   const [allMovies, setAllMovies] = useState<IMovie[]>([]);
   const [filtredMovies, setFiltredMovies] = useState<IMovie[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);

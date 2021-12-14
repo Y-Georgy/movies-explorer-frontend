@@ -53,7 +53,7 @@ function App() {
   // ПРОВЕРКА ПОЛЬЗОВАТЕЛЯ ПРИ ВХОДЕ
   useEffect(() => {
     checkUserToken();
-  }, [])
+  })
 
   return (
     <>

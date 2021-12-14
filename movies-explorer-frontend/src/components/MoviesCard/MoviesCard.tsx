@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
 import iconMovie from '../../images/icon-movie.svg'
 import { mainApi } from '../../vendor/MainApi'
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+// import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { IMovie } from '../Movies/Movies';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 const MoviesCard = ({ movieCard }: Props) => {
   const [isSavedMovie, setIsSavedMovie] = useState<Boolean>(false)
   const { pathname } = useLocation();
-  const currentUser = React.useContext(CurrentUserContext)
+  // const currentUser = React.useContext(CurrentUserContext)
 
   function handleClickBtnSave(): void {
     if (!isSavedMovie) {
@@ -52,16 +52,3 @@ const MoviesCard = ({ movieCard }: Props) => {
 }
 
 export default MoviesCard;
-
-
-// country: movie.country,
-// description: movie.description,
-// director: movie.director,
-// duration: getTimeFromMins(movie.duration),
-// image: `https://api.nomoreparties.co${movie.image.url}`,
-// nameEN: movie.nameEN,
-// nameRU: movie.nameRU,
-// trailer: movie.trailerLink,
-// year: movie.year,
-// thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
-// movieId: movie.id
