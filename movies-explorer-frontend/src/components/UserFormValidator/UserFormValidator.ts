@@ -56,5 +56,5 @@ export function UserFormValidator() {
     return (isValidName() && isValidEmail() && isValidPassword())
   }
 
-  return { values, validators, handleChange, isValidForm };
+  return { values, setValues, validators, handleChange, isValidForm };
 }
