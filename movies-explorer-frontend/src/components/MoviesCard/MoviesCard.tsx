@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
-import iconMovie from '../../images/icon-movie.svg'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { IMovie } from '../Movies/Movies';
 
@@ -52,7 +51,7 @@ const MoviesCard = ({ movieCard, deleteMovie, saveMovie }: Props) => {
   return (
     <li className="movies-card">
       <a href={movieCard.trailer} target="_blank" rel="noreferrer">
-        <img src={movieCard.image ? movieCard.image : iconMovie} alt="Обложка фильма" className="movies-card__image" />
+        <img src={movieCard.image} alt="Обложка фильма" className="movies-card__image" />
       </a>
       <p className="movies-card__name">{movieCard.nameRU}</p>
       <p className="movies-card__duration">{getTimeFromMins(movieCard.duration)}</p>
