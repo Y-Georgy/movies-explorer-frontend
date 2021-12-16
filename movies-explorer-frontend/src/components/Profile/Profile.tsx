@@ -86,7 +86,7 @@ function Profile() {
             className="form-profile__submit-button"
             disabled={!isValidForm() || values.name === '' || values.email === '' || (values.name === currentUser.name && values.email === currentUser.email )}
           >
-            Редактировать
+            Сохранить
           </button>
         </form>
         <button type="button" className="profile__logout-button" onClick={handleSignOut}>Выйти из аккаунта</button>
