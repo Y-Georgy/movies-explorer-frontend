@@ -40,10 +40,16 @@ const MoviesCard = ({ movieCard, deleteMovie, saveMovie }: Props) => {
             ? ' movies-card__button_icon_active'
             : ' movies-card__button_icon_save'}`
         }
-        onClick={handleClickBtnLike} />
+        onClick={handleClickBtnLike}
+        title={
+          movieCard._id
+            ? 'Удалить фильм из сохранённых'
+            : 'Сохранить фильм'
+        }
+      />
     }
     if (pathname === "/saved-movies") {
-      return <button className="movies-card__button movies-card__button_icon_delete" onClick={handleClickBtnDelete} />
+      return <button className="movies-card__button movies-card__button_icon_delete" onClick={handleClickBtnDelete} title='Удалить фильм из сохранённых'/>
     }
     return null
   }
