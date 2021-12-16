@@ -2,30 +2,24 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
 import iconMovie from '../../images/icon-movie.svg'
-import { mainApi } from '../../utils/MainApi'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { IMovie } from '../Movies/Movies';
 
 interface Props {
-  movieCard: IMovie
+  movieCard: IMovie,
+  deleteMovie: (movie: IMovie) => void,
+  saveMovie?: (movie: IMovie) => void,
 }
 
-const MoviesCard = ({ movieCard }: Props) => {
-  const [isSavedMovie, setIsSavedMovie] = useState<Boolean>(false)
+const MoviesCard = ({ movieCard, deleteMovie, saveMovie }: Props) => {
   const { pathname } = useLocation();
   const currentUser = React.useContext(CurrentUserContext)
 
-  function handleClickBtnSave(): void {
-    if (!isSavedMovie) {
-      mainApi.postMovies(movieCard)
-        .then(res => {
-          setIsSavedMovie(!isSavedMovie)
-          // console.log('savee', res.data.movie._id)
-          console.log('movieCard', movieCard)
-        })
-        .catch(err => console.log(err))
-    } else {
-
+  function handleClickBtnLike(): void {
+    if (movieCard._id) {
+      deleteMovie(movieCard)
+    } else if (saveMovie) {
+      saveMovie(movieCard)
     }
   }
 
@@ -35,21 +29,19 @@ const MoviesCard = ({ movieCard }: Props) => {
     return hours + 'ч ' + minutes + 'м';
   };
 
-  function deleteMovie() {
-    if (movieCard._id) {
-      mainApi.deleteMovie(movieCard._id)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-    }
-  }
-
   function handleClickBtnDelete() {
-    deleteMovie();
+    deleteMovie(movieCard);
   }
 
   function getButton(): React.ReactNode | null {
     if (pathname === "/movies") {
-      return <button className={`movies-card__button movies-card__button_icon_save${currentUser.movies.includes(movieCard._id) ? ' movies-card__button_icon_active' : ''}`} onClick={handleClickBtnSave} />
+      return <button className={
+          `movies-card__button
+          ${movieCard._id
+            ? ' movies-card__button_icon_active'
+            : ' movies-card__button_icon_save'}`
+        }
+        onClick={handleClickBtnLike} />
     }
     if (pathname === "/saved-movies") {
       return <button className="movies-card__button movies-card__button_icon_delete" onClick={handleClickBtnDelete} />

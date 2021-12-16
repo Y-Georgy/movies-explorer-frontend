@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
 import { filterMovies } from '../../utils/utils';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import React from 'react';
 
 export interface IMovie {
   country: string,
@@ -25,10 +27,12 @@ export interface IMovie {
 }
 
 function Movies() {
+  const currentUser = React.useContext(CurrentUserContext)
   const [preparedMovies, setPreparedMovies] = useState<IMovie[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [messageSearchMovies, setMessageSearchMovies] = useState<string>('');
 
+  // получение и подготовка массива с фильмами
   function formatMoviesArr(movies: any) {
     const newArrMovies = movies.map(((movie: any) => {
       const newMovie: IMovie = {
@@ -50,9 +54,9 @@ function Movies() {
   }
 
   function checkLikedMovies(allMovies: any, userMovies: any) {
-    const newMoviesArr = allMovies.map((movie: { movieId: any; }) => {
+    const newMoviesArr = allMovies.map((movie: any) => {
       const userMovie = userMovies.find((userMovie: any) => userMovie.movieId === movie.movieId)
-      if (userMovie) return userMovie
+      userMovie ? movie._id = userMovie._id : delete movie._id
       return movie
       })
     return newMoviesArr
@@ -67,14 +71,15 @@ function Movies() {
 
       Promise.all([moviesApi.getMovies(), mainApi.getMovies()])
       .then(([allMovies, userMovies]) => {
-        const formattedMoviesArr = formatMoviesArr(allMovies)
-        const comparedMovies = checkLikedMovies(formattedMoviesArr, userMovies.data)
-        const filtredMovies = filterMovies(searchQuery, comparedMovies);
-        if (filtredMovies.length === 0) {
+        console.log('allMovies', allMovies)
+        let newMoviesArr = formatMoviesArr(allMovies);
+        if (userMovies.data) newMoviesArr = checkLikedMovies(newMoviesArr, userMovies.data)
+        newMoviesArr = filterMovies(searchQuery, newMoviesArr);
+        if (newMoviesArr.length === 0) {
           setMessageSearchMovies('Ничего не найдено');
         } else {
-          setPreparedMovies(filtredMovies);
-          localStorage.setItem('movies', JSON.stringify(filtredMovies));
+          setPreparedMovies(newMoviesArr);
+          localStorage.setItem('movies', JSON.stringify(newMoviesArr));
         }
       })
       .catch((err) => {
@@ -84,12 +89,40 @@ function Movies() {
     }
   }
 
-  useEffect(() => {
-    const localMovies = localStorage.getItem('movies');
-    if (localMovies) {
-      setPreparedMovies(JSON.parse(localMovies))
+  // useEffect(() => {
+  //   const localMovies = localStorage.getItem('movies');
+  //   if (localMovies) {
+  //     setPreparedMovies(JSON.parse(localMovies))
+  //   }
+  // }, [])
+
+  // Удаление и сохранение фильмов
+  function updateMovies() {
+    mainApi.getMovies()
+      .then(userMovies => {
+        const comparedMovies = checkLikedMovies(preparedMovies, userMovies.data)
+        setPreparedMovies(comparedMovies);
+        localStorage.setItem('movies', JSON.stringify(comparedMovies));
+      })
+      .catch(console.log)
+  }
+
+  function deleteMovie(movie: IMovie) {
+    if (movie._id) {
+      mainApi.deleteMovie(movie._id)
+        .then(res => updateMovies())
+        .catch(console.log)
     }
-  }, [])
+  }
+
+  function saveMovie(movie: IMovie) {
+    movie._id && delete movie._id
+    mainApi.postMovies(movie)
+    .then(res => {
+      updateMovies();
+    })
+    .catch(console.log)
+  }
 
   return (
     <>
@@ -100,6 +133,8 @@ function Movies() {
           moviesArr={preparedMovies}
           isLoadingMovies={isLoadingMovies}
           massageSearchMovies={messageSearchMovies}
+          deleteMovie={deleteMovie}
+          saveMovie={saveMovie}
         />
         <Footer />
       </main>

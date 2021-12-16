@@ -14,6 +14,7 @@ function SavedMovies () {
   const [message, setMessage] = useState<string>('');
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
 
+  // поиск
   function handleSubmitSearch(searchQuery: string) {
     setMessage('');
     if (searchQuery.length === 0) {
@@ -28,16 +29,13 @@ function SavedMovies () {
     }
   }
 
+  // получение фильмов
   function getCurruntUserMovies() {
     setIsLoadingMovies(true);
     setMessage('');
     mainApi.getMovies()
       .then((res) => {
-        if (res.data.length === 0) {
-          setMessage('У Вас еще нет сохранённых фильмов');
-        } else {
-          setUserMovies(res.data);
-        }
+        res.message ? setMessage(res.message) : setUserMovies(res.data)
       })
       .catch((err) => {
         setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
@@ -49,6 +47,15 @@ function SavedMovies () {
     getCurruntUserMovies();
   }, [])
 
+  // удаление фильмов
+  function deleteMovie(movie: IMovie) {
+    if (movie._id) {
+      mainApi.deleteMovie(movie._id)
+        .then(res => getCurruntUserMovies())
+        .catch(err => console.log(err))
+    }
+  }
+
   return (
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
@@ -58,6 +65,7 @@ function SavedMovies () {
           moviesArr={message.length === 0 ? userMovies : []}
           isLoadingMovies={isLoadingMovies}
           massageSearchMovies={message}
+          deleteMovie={deleteMovie}
         />
         <Footer />
       </main>

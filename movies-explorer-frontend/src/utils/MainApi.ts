@@ -25,7 +25,6 @@ class MainApi {
     this._headers = headers
   }
 
-  // обработчик ответа
   _handleResponse(res: { ok: boolean; json: () => any; status: any; }) {
     if (res.ok) {
       return res.json()

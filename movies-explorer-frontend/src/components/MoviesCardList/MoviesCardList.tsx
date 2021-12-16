@@ -8,10 +8,12 @@ type UserScreen = 's' | 'm' | 'l';
 interface Props {
   moviesArr: IMovie[],
   isLoadingMovies: boolean,
-  massageSearchMovies: string
+  massageSearchMovies: string,
+  deleteMovie: (movie: IMovie) => void,
+  saveMovie?: (movie: IMovie) => void
 }
 
-function MoviesCardList({ moviesArr, isLoadingMovies, massageSearchMovies }: Props) {
+function MoviesCardList({ moviesArr, isLoadingMovies, massageSearchMovies, deleteMovie, saveMovie }: Props) {
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([])
 
   function checkClientWindow(): UserScreen {
@@ -51,10 +53,12 @@ function MoviesCardList({ moviesArr, isLoadingMovies, massageSearchMovies }: Pro
   return (
     <section className="movies-card-list">
       <ul className="movies-card-list__container">
-        {renderMovies.length !== 0 && renderMovies.map((movie) => (
+        {renderMovies.map((movie) => (
           <MoviesCard
             key={movie.movieId}
             movieCard={movie}
+            deleteMovie={deleteMovie}
+            saveMovie={saveMovie}
           />
         ))}
       </ul>
