@@ -82,6 +82,16 @@
   text-align: center;
 }
 
+.form-profile__success-message {
+  color: #2dd32d;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  margin-bottom: 20px;
+  min-height: 13px;
+  text-align: center;
+}
+
 .form-profile__submit-button {
   font-weight: 400;
   font-size: 13px;

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
 import { filterMovies } from '../../utils/utils';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import iconMovie from '../../images/icon-movie.svg'
 import { ISearchParams } from '../SearchForm/SearchForm';
 
@@ -30,7 +29,6 @@ export interface IMovie {
 }
 
 function Movies() {
-  const currentUser = React.useContext(CurrentUserContext)
   const [preparedMovies, setPreparedMovies] = useState<IMovie[]>([]);
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [messageSearchMovies, setMessageSearchMovies] = useState<string>('');

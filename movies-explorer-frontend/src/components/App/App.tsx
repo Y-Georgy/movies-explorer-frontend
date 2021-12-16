@@ -26,6 +26,8 @@ function App() {
   const [errorLoginMessage, setErrorLoginMessage] = useState<string>('')
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
 
+  const contextValue = { currentUser, setCurrentUser }
+
   function handleSubmitLogin({ email, password }: IDataLogin) {
     setErrorLoginMessage('')
     mainApi.login({ email, password })
@@ -57,7 +59,7 @@ function App() {
 
   return (
     <>
-      <CurrentUserContext.Provider value={currentUser}>
+      <CurrentUserContext.Provider value={contextValue}>
         <Routes>
           <Route path="/" element={
             <>

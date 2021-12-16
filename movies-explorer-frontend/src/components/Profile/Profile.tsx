@@ -1,5 +1,5 @@
 import './Profile.css'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
 import { mainApi } from '../../utils/MainApi';
@@ -7,19 +7,46 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
 
 function Profile() {
-  const currentUser = React.useContext(CurrentUserContext)
+  const { currentUser, setCurrentUser } = React.useContext(CurrentUserContext)
   const { values, setValues, validators, handleChange, isValidForm } = UserFormValidator()
+  const [errorSubmitEditPrifile, setErrorSubmitEditPrifile] = useState<String>('')
+  const [seccessMessageSubmit, setSeccessMessageSubmit] = useState<String>('')
 
   useEffect(() => {
     setValues({ ...values, name: currentUser.name, email: currentUser.email })
   }, [])
+
+  function handleSubmitEditProfile(evt: any) {
+    evt.preventDefault();
+    setErrorSubmitEditPrifile('')
+    const userData = {
+      name: values.name,
+      email: values.email
+    }
+    mainApi.updateProfile( userData )
+      .then(res => {
+        setCurrentUser(res.data)
+        setSeccessMessageSubmit('Профиль успешно изменён')
+        setTimeout(() => {setSeccessMessageSubmit('')}, 5000)
+      })
+      .catch(err => {
+        console.log(err)
+        setErrorSubmitEditPrifile(err)
+      })
+  }
+
+  function handleSignOut() {
+    mainApi.signOut()
+      .then(console.log)
+      .catch(console.log)
+  }
 
   return (
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="profile">
         <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-         <form className="form-profile" name="form-profile">
+         <form className="form-profile" name="form-profile" onSubmit={handleSubmitEditProfile}>
           <label className="form-profile__label">
             Имя
             <input
@@ -52,7 +79,8 @@ function Profile() {
             {!validators.isValidEmail && 'Введён не корректный e-mail'}
           </span>
 
-          <span className="form-profile__error"></span>
+          <span className="form-profile__error">{errorSubmitEditPrifile && errorSubmitEditPrifile}</span>
+          <span className="form-profile__success-message">{seccessMessageSubmit && seccessMessageSubmit}</span>
           <button
             type="submit"
             className="form-profile__submit-button"
@@ -61,7 +89,7 @@ function Profile() {
             Редактировать
           </button>
         </form>
-        <button type="button" className="profile__logout-button">Выйти из аккаунта</button>
+        <button type="button" className="profile__logout-button" onClick={handleSignOut}>Выйти из аккаунта</button>
       </main>
     </>
   )

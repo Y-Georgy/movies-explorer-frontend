@@ -71,7 +71,14 @@ class MainApi {
       credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(user), // передавать name и email
-    }).then(this._handleResponse)
+    }).then((res) => {
+      if (res.ok) {
+        return res.json()
+      } else if (res.status === 409) {
+        return Promise.reject(`Переданный Email уже используется другим пользователем`)
+      }
+      return Promise.reject(`Произошла ошибка: ${res.status}`)
+    })
   }
 
   register(userData: IRegisterUserData) {
@@ -101,6 +108,19 @@ class MainApi {
         return res.json()
       } else if (res.status === 401) {
         return Promise.reject(`Неправильные почта или пароль`)
+      }
+      return Promise.reject(`Произошла ошибка: ${res.status}`)
+    })
+  }
+
+  signOut() {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: 'post',
+      credentials: 'include',
+      headers: this._headers,
+    }).then((res) => {
+      if (res.ok) {
+        return res.json()
       }
       return Promise.reject(`Произошла ошибка: ${res.status}`)
     })

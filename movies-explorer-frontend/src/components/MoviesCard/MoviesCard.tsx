@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { IMovie } from '../Movies/Movies';
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
 
 const MoviesCard = ({ movieCard, deleteMovie, saveMovie }: Props) => {
   const { pathname } = useLocation();
-  const currentUser = React.useContext(CurrentUserContext)
 
   function handleClickBtnLike(): void {
     if (movieCard._id) {
