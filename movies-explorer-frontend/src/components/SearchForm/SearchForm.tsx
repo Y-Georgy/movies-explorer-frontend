@@ -26,15 +26,15 @@ function SearchForm({ onSubmit }: Props) {
   }
 
   function handleChangeIsShort() {
+    onSubmit({
+      query: searchParams.query,
+      isShort: !searchParams.isShort
+    })
     setSearchParams({
       query: searchParams.query,
       isShort: !searchParams.isShort
     });
   }
-
-  useEffect(() => {
-    onSubmit(searchParams)
-  }, [searchParams.isShort])
 
   return (
     <form method="GET" className="search-form" name="search" onSubmit={handleSubmit} noValidate>
