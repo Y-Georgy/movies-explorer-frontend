@@ -33,6 +33,7 @@ function App() {
     mainApi.login({ email, password })
     .then(res => {
       checkUserToken();
+      setLoggedIn(true);
       navigate('/movies');
     })
     .catch(err => {
