@@ -1,0 +1,4 @@
+.movies {
+  background-color: #202020;
+  min-height: calc(100vh - 74px);
+}

@@ -1,0 +1,59 @@
+.switch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.switch:hover {
+  opacity: 0.9;
+  transition: opacity 0.5s ease-out;
+}
+
+.switch__label {
+  margin-left: 14px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.switch__input {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  -webkit-appearance: none;
+  outline: none;
+  background-color: #343434;
+  border-radius: 20px;
+  transition: background-color .4s ease-out;
+  cursor: pointer;
+  margin: 0;
+}
+
+.switch__input:checked {
+  background-color: #3DDC84;
+}
+
+.switch__input::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #A0A0A0;
+  top: 2px;
+  left: 2px;
+  transition: left .4s ease-out;
+}
+
+.switch__input:checked::before {
+  left: 18px;
+  background-color: #fff;
+}
+
+@media (max-width: 767px) {
+  .switch__label {
+    margin-left: 13px;
+    font-size: 11px;
+  }
+}
