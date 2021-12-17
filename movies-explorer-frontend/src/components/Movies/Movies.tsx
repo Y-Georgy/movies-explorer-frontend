@@ -78,6 +78,8 @@ function Movies() {
         newMoviesArr = filterMovies(searchParams, newMoviesArr);
         if (newMoviesArr.length === 0) {
           setMessageSearchMovies('Ничего не найдено');
+          setPreparedMovies([]);
+          localStorage.setItem('movies', JSON.stringify([]));
         } else {
           setPreparedMovies(newMoviesArr);
           localStorage.setItem('movies', JSON.stringify(newMoviesArr));
