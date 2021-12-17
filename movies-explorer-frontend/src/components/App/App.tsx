@@ -42,14 +42,14 @@ function App() {
 
   function checkUserToken() {
     mainApi.getProfile()
-      .then(res => auth(res.data))
-      .catch(err => console.log(err))
-  }
-
-  // АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ
-  function auth(dataUser: any) {
-    setLoggedIn(true)
-    setCurrentUser(dataUser)
+      .then(res => {
+        setLoggedIn(true)
+        setCurrentUser(res.data)
+      })
+      .catch(err => {
+        setLoggedIn(false)
+        setCurrentUser({})
+      })
   }
 
   // ПРОВЕРКА ПОЛЬЗОВАТЕЛЯ ПРИ ВХОДЕ
@@ -89,7 +89,7 @@ function App() {
           <Route path="/signin" element={<Login onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
           <Route
             path="/profile"
-            element={<ProtectedRoute component={Profile} loggedIn={loggedIn} />}
+            element={<ProtectedRoute component={Profile} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

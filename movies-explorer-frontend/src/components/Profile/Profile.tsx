@@ -5,12 +5,18 @@ import Navigation from '../Navigation/Navigation';
 import { mainApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
+import { useNavigate } from 'react-router-dom';
 
-function Profile() {
+interface Props {
+  setLoggedIn: (value: boolean) => void
+}
+
+function Profile( {setLoggedIn }: Props ) {
   const { currentUser, setCurrentUser } = React.useContext(CurrentUserContext)
   const { values, setValues, validators, handleChange, isValidForm } = UserFormValidator()
   const [errorSubmitEditPrifile, setErrorSubmitEditPrifile] = useState<String>('')
   const [seccessMessageSubmit, setSeccessMessageSubmit] = useState<String>('')
+  const navigate = useNavigate();
 
   useEffect(() => {
     setValues({ ...values, name: currentUser.name, email: currentUser.email })
@@ -27,17 +33,20 @@ function Profile() {
       .then(res => {
         setCurrentUser(res.data)
         setSeccessMessageSubmit('Профиль успешно изменён')
-        setTimeout(() => {setSeccessMessageSubmit('')}, 5000)
+        setTimeout(() => {setSeccessMessageSubmit('')}, 3000)
       })
       .catch(err => {
-        console.log(err)
         setErrorSubmitEditPrifile(err)
       })
   }
 
   function handleSignOut() {
     mainApi.signOut()
-      .then(console.log)
+      .then(res => {
+        setLoggedIn(false)
+        setCurrentUser({})
+        navigate('/')
+      })
       .catch(console.log)
   }
 
