@@ -55,7 +55,7 @@ function Profile( {setLoggedIn }: Props ) {
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="profile">
         <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-         <form className="form-profile" name="form-profile" onSubmit={handleSubmitEditProfile}>
+         <form className="form-profile" name="form-profile" onSubmit={handleSubmitEditProfile} noValidate>
           <label className="form-profile__label">
             Имя
             <input
@@ -63,8 +63,6 @@ function Profile( {setLoggedIn }: Props ) {
               className="form-profile__input"
               name="name"
               placeholder="Ваше имя"
-              minLength={2}
-              maxLength={30}
               value={values.name}
               onChange={handleChange}
             />
