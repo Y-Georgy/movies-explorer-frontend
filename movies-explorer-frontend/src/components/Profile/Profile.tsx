@@ -80,6 +80,9 @@ function Profile( {setLoggedIn }: Props ) {
             />
           </label>
           <span className="form-profile__input-error">
+            {!validators.isValidNameLength && 'Минимальная длина имени 2 знака, максимальная 30 знаков'}
+          </span>
+          <span className="form-profile__input-error">
             {!validators.isValidName && 'Имя может содержать только латиницу, кириллицу, пробел или дефис'}
           </span>
           <span className="form-profile__input-error">
@@ -91,7 +94,7 @@ function Profile( {setLoggedIn }: Props ) {
           <button
             type="submit"
             className="form-profile__submit-button"
-            disabled={!isValidForm() || values.name === '' || values.email === '' || (values.name === currentUser.name && values.email === currentUser.email )}
+            disabled={!isValidForm(['name', 'email']) || (values.name === currentUser.name && values.email === currentUser.email )}
           >
             Сохранить
           </button>

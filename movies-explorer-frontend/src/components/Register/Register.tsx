@@ -52,7 +52,10 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
           onChange={handleChange}
         />
         <span className="form-user__error name-input-error">
-          {!validators.isValidName && 'Имя может содержать только латиницу, кириллицу, пробел или дефис'}
+          {!validators.isValidNameLength && 'Минимальная длина имени 2 знака, максимальная 30 знаков. '}
+        </span>
+        <span className="form-user__error name-input-error">
+          {!validators.isValidName && 'Имя может содержать только латиницу, кириллицу, пробел или дефис.'}
         </span>
 
         <label htmlFor="email" className="form-user__label">E-mail</label>
@@ -89,7 +92,8 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
         <button
           type="submit"
           className="form-user__submit-button"
-          disabled={!isValidForm() || values.name === '' || values.email === '' || values.password === ''}
+          disabled={!isValidForm(['name', 'email', 'password'])}
+
         >
           Зарегистрироваться
         </button>

@@ -72,7 +72,7 @@ function Login( { onSubmit, errorLoginMessage }: Props) {
           <button
             type="submit"
             className="form-user__submit-button"
-            disabled={!isValidForm() || values.email === '' || values.password === ''}
+            disabled={!isValidForm(['email', 'password'])}
           >
             Войти
           </button>

@@ -30,6 +30,14 @@ export function UserFormValidator() {
     }
   }
 
+  function isValidNameLength() {
+    if (values.name !== '') {
+      return values.name.length <= 30 && values.name.length >= 2;
+    } else {
+      return true
+    }
+  }
+
   function isValidEmail() {
     if (values.email !== '') {
       return validator.isEmail(values.email)
@@ -48,12 +56,22 @@ export function UserFormValidator() {
 
   const validators = {
     isValidName: isValidName(),
+    isValidNameLength: isValidNameLength(),
     isValidEmail: isValidEmail(),
     isValidPassword: isValidPassword()
   }
 
-  function isValidForm() {
-    return (isValidName() && isValidEmail() && isValidPassword())
+  function isValidForm(inputNamesArray: string[]) {
+    return inputNamesArray.every((inputName: string) => {
+      if (inputName === 'name') {
+        return isValidName() && isValidNameLength();
+      } else if (inputName === 'email') {
+        return isValidEmail() && values.email.length > 0;
+      } else if (inputName === 'password') {
+        return isValidPassword() && values.password.length > 0;
+      }
+    })
+    // return (isValidName() && isValidEmail() && isValidPassword())
   }
 
   return { values, setValues, validators, handleChange, isValidForm };
