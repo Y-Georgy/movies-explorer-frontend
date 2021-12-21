@@ -19,8 +19,10 @@ function Profile( {setLoggedIn }: Props ) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setValues({ ...values, name: currentUser.name, email: currentUser.email })
-  }, [])
+    if (currentUser.name && currentUser.email) {
+      setValues({ ...values, name: currentUser.name, email: currentUser.email })
+    }
+  }, [currentUser])
 
   function handleSubmitEditProfile(evt: any) {
     evt.preventDefault();
@@ -49,60 +51,61 @@ function Profile( {setLoggedIn }: Props ) {
       })
       .catch(console.log)
   }
+  if (currentUser) {
+    return (
+      <>
+        <Header children={<Navigation />} bgcolor="grey"/>
+        <main className="profile">
+          <h1 className="profile__title">Привет, {currentUser.name}!</h1>
+          <form className="form-profile" name="form-profile" onSubmit={handleSubmitEditProfile} noValidate>
+            <label className="form-profile__label">
+              Имя
+              <input
+                type="text"
+                className="form-profile__input"
+                name="name"
+                placeholder="Ваше имя"
+                value={values.name}
+                onChange={handleChange}
+              />
+            </label>
 
-  return (
-    <>
-      <Header children={<Navigation />} bgcolor="grey"/>
-      <main className="profile">
-        <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-         <form className="form-profile" name="form-profile" onSubmit={handleSubmitEditProfile} noValidate>
-          <label className="form-profile__label">
-            Имя
-            <input
-              type="text"
-              className="form-profile__input"
-              name="name"
-              placeholder="Ваше имя"
-              value={values.name}
-              onChange={handleChange}
-            />
-          </label>
+            <label className="form-profile__label">
+              E-mail
+              <input
+                type="email"
+                className="form-profile__input"
+                name="email"
+                placeholder="Ваш e-mail"
+                value={values.email}
+                onChange={handleChange}
+              />
+            </label>
+            <span className="form-profile__input-error">
+              {!validators.isValidNameLength && 'Минимальная длина имени 2 знака, максимальная 30 знаков'}
+            </span>
+            <span className="form-profile__input-error">
+              {!validators.isValidName && 'Имя может содержать только латиницу, кириллицу, пробел или дефис'}
+            </span>
+            <span className="form-profile__input-error">
+              {!validators.isValidEmail && 'Введён не корректный e-mail'}
+            </span>
 
-          <label className="form-profile__label">
-            E-mail
-            <input
-              type="email"
-              className="form-profile__input"
-              name="email"
-              placeholder="Ваш e-mail"
-              value={values.email}
-              onChange={handleChange}
-            />
-          </label>
-          <span className="form-profile__input-error">
-            {!validators.isValidNameLength && 'Минимальная длина имени 2 знака, максимальная 30 знаков'}
-          </span>
-          <span className="form-profile__input-error">
-            {!validators.isValidName && 'Имя может содержать только латиницу, кириллицу, пробел или дефис'}
-          </span>
-          <span className="form-profile__input-error">
-            {!validators.isValidEmail && 'Введён не корректный e-mail'}
-          </span>
-
-          <span className="form-profile__error">{errorSubmitEditPrifile && errorSubmitEditPrifile}</span>
-          <span className="form-profile__success-message">{seccessMessageSubmit && seccessMessageSubmit}</span>
-          <button
-            type="submit"
-            className="form-profile__submit-button"
-            disabled={!isValidForm(['name', 'email']) || (values.name === currentUser.name && values.email === currentUser.email )}
-          >
-            Сохранить
-          </button>
-        </form>
-        <button type="button" className="profile__logout-button" onClick={handleSignOut}>Выйти из аккаунта</button>
-      </main>
-    </>
-  )
+            <span className="form-profile__error">{errorSubmitEditPrifile && errorSubmitEditPrifile}</span>
+            <span className="form-profile__success-message">{seccessMessageSubmit && seccessMessageSubmit}</span>
+            <button
+              type="submit"
+              className="form-profile__submit-button"
+              disabled={!isValidForm(['name', 'email']) || (values.name === currentUser.name && values.email === currentUser.email )}
+            >
+              Сохранить
+            </button>
+          </form>
+          <button type="button" className="profile__logout-button" onClick={handleSignOut}>Выйти из аккаунта</button>
+        </main>
+      </>
+    )
+  }
 }
 
 export default Profile;
