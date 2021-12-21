@@ -24,7 +24,7 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({})
   const [errorLoginMessage, setErrorLoginMessage] = useState<string>('')
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loggedIn, setLoggedIn] = useState<boolean>(true)
 
   const contextValue = { currentUser, setCurrentUser }
 
