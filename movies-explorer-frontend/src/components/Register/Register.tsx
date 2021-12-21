@@ -1,10 +1,12 @@
 import './Register.css'
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
 import { mainApi } from '../../utils/MainApi';
 import { useEffect, useState } from 'react';
 import { IDataLogin } from '../App/App';
+import React from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 interface Props {
   onSubmit: ( dataLogin: IDataLogin ) => void,
@@ -12,6 +14,8 @@ interface Props {
 }
 
 function Register({ onSubmit, errorLoginMessage }: Props) {
+  const navigate = useNavigate();
+  const { currentUser } = React.useContext(CurrentUserContext)
   const { values, validators, handleChange, isValidForm } = UserFormValidator()
   const [errorRegister, setErrorRegister] = useState<string>('')
 
@@ -33,6 +37,10 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
   useEffect(() => {
     setErrorRegister('')
   }, [values])
+
+  useEffect(() => {
+    Object.keys(currentUser).length !== 0 && navigate('/profile')
+  }, [currentUser])
 
   return (
     <main className="register">
