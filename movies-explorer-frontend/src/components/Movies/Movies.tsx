@@ -78,26 +78,28 @@ function Movies() {
         newMoviesArr = filterMovies(searchParams, newMoviesArr);
         if (newMoviesArr.length === 0) {
           setMessageSearchMovies('Ничего не найдено');
-          setPreparedMovies([]);
-          localStorage.setItem('movies', JSON.stringify([]));
-        } else {
-          setPreparedMovies(newMoviesArr);
-          localStorage.setItem('movies', JSON.stringify(newMoviesArr));
         }
+        setPreparedMovies(newMoviesArr);
+        localStorage.setItem('movies', JSON.stringify({
+          movies: newMoviesArr,
+          query: searchParams.query,
+          isShort: searchParams.isShort
+        }));
       })
-      .catch((err) => {
+      .catch(() => {
         setMessageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
       })
       .finally(() => setIsLoadingMovies(false))
     }
   }
 
-  // useEffect(() => {
-  //   const localMovies = localStorage.getItem('movies');
-  //   if (localMovies) {
-  //     setPreparedMovies(JSON.parse(localMovies))
-  //   }
-  // }, [])
+  useEffect(() => {
+    const localMoviesJSON = localStorage.getItem('movies');
+    if (localMoviesJSON) {
+      const localMoviesData = JSON.parse(localMoviesJSON)
+      setPreparedMovies(localMoviesData.movies)
+    }
+  }, [])
 
   // Удаление и сохранение фильмов
   function updateMovies() {
