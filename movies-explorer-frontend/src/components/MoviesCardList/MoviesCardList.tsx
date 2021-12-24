@@ -31,7 +31,7 @@ function MoviesCardList({ moviesArr, isLoadingMovies, massageSearchMovies, delet
       </ul>
       {isLoadingMovies && <Preloader />}
       {massageSearchMovies && <span className="movies-card-list__content-not-found">{massageSearchMovies}</span>}
-      {ButtonYet && ButtonYet}
+      {(ButtonYet && !isLoadingMovies && !massageSearchMovies) && ButtonYet}
     </section>
   )
 }
