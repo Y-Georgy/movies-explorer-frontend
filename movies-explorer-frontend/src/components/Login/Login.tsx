@@ -9,10 +9,11 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 interface Props {
   onSubmit: ( dataLogin: IDataLogin ) => void,
-  errorLoginMessage: string
+  errorLoginMessage: string,
+  isFormDisabled: boolean
 }
 
-function Login( { onSubmit, errorLoginMessage }: Props) {
+function Login( { onSubmit, errorLoginMessage, isFormDisabled }: Props) {
   const navigate = useNavigate();
   const { currentUser } = React.useContext(CurrentUserContext)
   const { values, validators, handleChange, isValidForm } = UserFormValidator()
@@ -55,6 +56,7 @@ function Login( { onSubmit, errorLoginMessage }: Props) {
             name="email"
             placeholder="Введите имя"
             onChange={handleChange}
+            disabled={isFormDisabled}
           />
           <span className="form-user__error email-input-error">
             {!validators.isValidEmail && 'Введён не корректный e-mail'}
@@ -69,6 +71,7 @@ function Login( { onSubmit, errorLoginMessage }: Props) {
             minLength={8}
             placeholder="Введите пароль"
             onChange={handleChange}
+            disabled={isFormDisabled}
           />
           <span className="form-user__error password-input-error">
             {!validators.isValidPassword && 'Пароль должен содержать минимум 8 знаков'}
@@ -80,7 +83,7 @@ function Login( { onSubmit, errorLoginMessage }: Props) {
           <button
             type="submit"
             className="form-user__submit-button"
-            disabled={!isValidForm(['email', 'password'])}
+            disabled={!isValidForm(['email', 'password']) || isFormDisabled}
           >
             Войти
           </button>

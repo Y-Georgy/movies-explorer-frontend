@@ -16,6 +16,7 @@ function Profile( {setLoggedIn }: Props ) {
   const { values, setValues, validators, handleChange, isValidForm } = UserFormValidator()
   const [errorSubmitEditPrifile, setErrorSubmitEditPrifile] = useState<String>('')
   const [seccessMessageSubmit, setSeccessMessageSubmit] = useState<String>('')
+  const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function Profile( {setLoggedIn }: Props ) {
 
   function handleSubmitEditProfile(evt: any) {
     evt.preventDefault();
+    setIsFormDisabled(true)
     setErrorSubmitEditPrifile('')
     const userData = {
       name: values.name,
@@ -40,6 +42,7 @@ function Profile( {setLoggedIn }: Props ) {
       .catch(err => {
         setErrorSubmitEditPrifile(err)
       })
+      .finally(() => setIsFormDisabled(false))
   }
 
   function handleSignOut() {
@@ -67,6 +70,7 @@ function Profile( {setLoggedIn }: Props ) {
                 placeholder="Ваше имя"
                 value={values.name}
                 onChange={handleChange}
+                disabled={isFormDisabled}
               />
             </label>
 
@@ -79,6 +83,7 @@ function Profile( {setLoggedIn }: Props ) {
                 placeholder="Ваш e-mail"
                 value={values.email}
                 onChange={handleChange}
+                disabled={isFormDisabled}
               />
             </label>
             <span className="form-profile__input-error">
@@ -96,7 +101,7 @@ function Profile( {setLoggedIn }: Props ) {
             <button
               type="submit"
               className="form-profile__submit-button"
-              disabled={!isValidForm(['name', 'email']) || (values.name === currentUser.name && values.email === currentUser.email )}
+              disabled={!isValidForm(['name', 'email']) || (values.name === currentUser.name && values.email === currentUser.email ) || isFormDisabled}
             >
               Сохранить
             </button>

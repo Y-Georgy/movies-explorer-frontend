@@ -40,6 +40,15 @@
   border: none;
 }
 
+.search-form__btn-submit:disabled {
+  opacity: 0.5;
+  background-color: #2F2F2F;
+}
+
+.form-user__submit-button:disabled:hover {
+  cursor: default;
+}
+
 .search-form__btn-submit:hover {
   cursor: pointer;
   opacity: .7;

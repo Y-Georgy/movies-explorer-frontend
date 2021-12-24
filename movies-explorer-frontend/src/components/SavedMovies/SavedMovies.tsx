@@ -16,6 +16,7 @@ function SavedMovies () {
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [isShort, setIsShort] = useState(false)
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([])
+  const [isFormSearchDisabled, setIsFormSearchDisabled] = useState<boolean>(false)
 
   // поиск
   function handleSubmitSearch(searchParams: ISearchParams) {
@@ -36,6 +37,7 @@ function SavedMovies () {
   // получение фильмов
   function getCurruntUserMovies() {
     setIsLoadingMovies(true);
+    setIsFormSearchDisabled(true)
     setMessage('');
     mainApi.getMovies()
       .then((res) => {
@@ -49,7 +51,10 @@ function SavedMovies () {
       .catch((err) => {
         setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
       })
-      .finally(() => setIsLoadingMovies(false))
+      .finally(() => {
+        setIsFormSearchDisabled(false)
+        setIsLoadingMovies(false)
+      })
   }
 
   useEffect(() => {
@@ -69,7 +74,10 @@ function SavedMovies () {
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="movies">
-        <SearchForm onSubmit={handleSubmitSearch} />
+        <SearchForm
+          onSubmit={handleSubmitSearch}
+          isFormDisabled={isFormSearchDisabled}
+        />
         <MoviesCardList
           moviesArr={message.length === 0 ? renderMovies : []}
           isLoadingMovies={isLoadingMovies}

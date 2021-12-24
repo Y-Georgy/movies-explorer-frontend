@@ -10,7 +10,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 interface Props {
   onSubmit: ( dataLogin: IDataLogin ) => void,
-  errorLoginMessage: string
+  errorLoginMessage: string,
 }
 
 function Register({ onSubmit, errorLoginMessage }: Props) {
@@ -18,9 +18,11 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
   const { currentUser } = React.useContext(CurrentUserContext)
   const { values, validators, handleChange, isValidForm } = UserFormValidator()
   const [errorRegister, setErrorRegister] = useState<string>('')
+  const [isFormDisabled, setIsFormDisabled] = useState<boolean>(false)
 
   function handleSubmit(e: any) {
     e.preventDefault()
+    setIsFormDisabled(true)
     mainApi.register(values)
       .then((res) => {
         onSubmit({ email: values.email, password: values.password })
@@ -28,6 +30,7 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
       .catch((err) => {
         setErrorRegister(err);
       })
+      .finally(() => setIsFormDisabled(false))
   }
 
   useEffect(() => {
@@ -58,6 +61,7 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
           name="name"
           placeholder="Введите имя"
           onChange={handleChange}
+          disabled={isFormDisabled}
         />
         <span className="form-user__error name-input-error">
           {!validators.isValidNameLength && 'Минимальная длина имени 2 знака, максимальная 30 знаков. '}
@@ -75,6 +79,7 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
           name="email"
           placeholder="Введите e-mail"
           onChange={handleChange}
+          disabled={isFormDisabled}
         />
         <span className="form-user__error email-input-error">
           {!validators.isValidEmail && 'Введён не корректный e-mail'}
@@ -89,7 +94,8 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
           name="password"
           placeholder="Введите пароль"
           onChange={handleChange}
-          />
+          disabled={isFormDisabled}
+        />
         <span className="form-user__error password-input-error">
           {!validators.isValidPassword && 'Пароль должен содержать минимум 8 знаков'}
         </span>
@@ -100,8 +106,7 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
         <button
           type="submit"
           className="form-user__submit-button"
-          disabled={!isValidForm(['name', 'email', 'password'])}
-
+          disabled={!isValidForm(['name', 'email', 'password']) || isFormDisabled}
         >
           Зарегистрироваться
         </button>

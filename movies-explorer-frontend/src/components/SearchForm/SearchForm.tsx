@@ -3,10 +3,11 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useState, useEffect } from 'react';
 
 interface Props {
-  onSubmit: (searchParams: ISearchParams) => void
+  onSubmit: (searchParams: ISearchParams) => void,
+  isFormDisabled: boolean,
   localSearchParams?: {
     query: string,
-    isShort: boolean
+    isShort: boolean,
   }
 }
 export interface ISearchParams {
@@ -14,7 +15,7 @@ export interface ISearchParams {
   isShort: boolean
 }
 
-function SearchForm({ onSubmit, localSearchParams }: Props) {
+function SearchForm({ onSubmit, localSearchParams, isFormDisabled }: Props) {
   const [searchParams, setSearchParams] = useState<ISearchParams>({ query: '', isShort: false})
 
   function handleSubmit(evt: any) {
@@ -51,11 +52,25 @@ function SearchForm({ onSubmit, localSearchParams }: Props) {
 
   return (
     <form method="GET" className="search-form" name="search" onSubmit={handleSubmit} noValidate>
-      <input className="search-form__query" placeholder="Фильм" type="text" value={searchParams.query} onChange={handleChangeInputValue}/>
-      <button type="submit" className="search-form__btn-submit">Поиск</button>
+      <input
+        className="search-form__query"
+        placeholder="Фильм"
+        type="text"
+        value={searchParams.query}
+        onChange={handleChangeInputValue}
+        disabled={isFormDisabled}
+      />
+      <button
+        type="submit"
+        className="search-form__btn-submit"
+        disabled={isFormDisabled}
+      >
+        Поиск
+      </button>
       <FilterCheckbox
         handleChangeIsShort={handleChangeIsShort}
         localSearchParams={localSearchParams}
+        isFormDisabled={isFormDisabled}
       />
       <hr className="search-form__line"/>
     </form>

@@ -25,11 +25,13 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [errorLoginMessage, setErrorLoginMessage] = useState<string>('')
   const [loggedIn, setLoggedIn] = useState<boolean>(true)
+  const [isLoginFormDisabled, setIsLoginFormDisabled] = useState<boolean>(false)
 
   const contextValue = { currentUser, setCurrentUser }
 
   function handleSubmitLogin({ email, password }: IDataLogin) {
     setErrorLoginMessage('')
+    setIsLoginFormDisabled(true)
     mainApi.login({ email, password })
     .then(res => {
       checkUserToken();
@@ -38,7 +40,8 @@ function App() {
     })
     .catch(err => {
       setErrorLoginMessage(err)
-    });
+    })
+    .finally(() => setIsLoginFormDisabled(true))
   }
 
   function checkUserToken() {
@@ -87,7 +90,7 @@ function App() {
             />}
           />
           <Route path="/signup" element={<Register onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
-          <Route path="/signin" element={<Login onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage}/>} />
+          <Route path="/signin" element={<Login onSubmit={handleSubmitLogin} errorLoginMessage={errorLoginMessage} isFormDisabled={isLoginFormDisabled} />} />
           <Route
             path="/profile"
             element={<ProtectedRoute component={Profile} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}

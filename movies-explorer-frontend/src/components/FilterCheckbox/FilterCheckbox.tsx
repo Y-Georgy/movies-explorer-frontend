@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 
 interface Props {
   handleChangeIsShort: () => void,
+  isFormDisabled: boolean,
   localSearchParams?: {
     isShort: boolean
   }
 }
 
-function FilterCheckbox( {handleChangeIsShort, localSearchParams}: Props ) {
+function FilterCheckbox( {handleChangeIsShort, localSearchParams, isFormDisabled}: Props ) {
   const [isShort, setIsShort] = useState(false)
 
   function handleClickCheckBox() {
@@ -22,7 +23,14 @@ function FilterCheckbox( {handleChangeIsShort, localSearchParams}: Props ) {
 
  return (
     <div className="switch">
-      <input id="switch" className="switch__input" type="checkbox" onChange={handleClickCheckBox} checked={isShort}/>
+      <input
+        id="switch"
+        className="switch__input"
+        type="checkbox"
+        onChange={handleClickCheckBox}
+        checked={isShort}
+        disabled={isFormDisabled}
+      />
       <label htmlFor="switch" className="switch__label">Короткометражки</label>
     </div>
   )
