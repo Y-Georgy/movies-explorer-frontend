@@ -41,7 +41,7 @@ function App() {
     .catch(err => {
       setErrorLoginMessage(err)
     })
-    .finally(() => setIsLoginFormDisabled(true))
+    .finally(() => setIsLoginFormDisabled(false))
   }
 
   function checkUserToken() {
