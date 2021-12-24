@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 interface Props {
   handleChangeIsShort: () => void,
-  isFormDisabled: boolean,
+  isFormDisabled?: boolean,
   localSearchParams?: {
     isShort: boolean
   }

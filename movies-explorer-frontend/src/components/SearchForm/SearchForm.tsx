@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 interface Props {
   onSubmit: (searchParams: ISearchParams) => void,
-  isFormDisabled: boolean,
+  isFormDisabled?: boolean,
   localSearchParams?: {
     query: string,
     isShort: boolean,
@@ -70,7 +70,7 @@ function SearchForm({ onSubmit, localSearchParams, isFormDisabled }: Props) {
       <FilterCheckbox
         handleChangeIsShort={handleChangeIsShort}
         localSearchParams={localSearchParams}
-        isFormDisabled={isFormDisabled}
+        isFormDisabled={isFormDisabled && isFormDisabled}
       />
       <hr className="search-form__line"/>
     </form>
