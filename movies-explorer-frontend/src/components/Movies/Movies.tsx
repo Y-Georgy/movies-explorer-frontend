@@ -34,6 +34,7 @@ function Movies() {
   const [messageSearchMovies, setMessageSearchMovies] = useState<string>('');
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([])
   const [searchParams, setSearchParams] = useState({ query: '', isShort: false})
+  const [isFormSearchDisabled, setIsFormSearchDisabled] = useState<boolean>(false)
 
   // получение и подготовка массива с фильмами
   function formatMoviesArr(movies: any) {
@@ -71,7 +72,7 @@ function Movies() {
     } else {
       setMessageSearchMovies('');
       setIsLoadingMovies(true);
-
+      setIsFormSearchDisabled(true)
       Promise.all([moviesApi.getMovies(), mainApi.getMovies()])
       .then(([allMovies, userMovies]) => {
         let newMoviesArr = formatMoviesArr(allMovies);
@@ -90,7 +91,10 @@ function Movies() {
       .catch(() => {
         setMessageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
       })
-      .finally(() => setIsLoadingMovies(false))
+      .finally(() => {
+        setIsLoadingMovies(false)
+        setIsFormSearchDisabled(false)
+      })
     }
   }
 
@@ -179,7 +183,11 @@ function Movies() {
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="movies">
-        <SearchForm onSubmit={handleSubmitSearch} localSearchParams={searchParams}/>
+        <SearchForm
+          onSubmit={handleSubmitSearch}
+          localSearchParams={searchParams}
+          isFormDisabled={isFormSearchDisabled}
+        />
         <MoviesCardList
           moviesArr={renderMovies}
           isLoadingMovies={isLoadingMovies}
