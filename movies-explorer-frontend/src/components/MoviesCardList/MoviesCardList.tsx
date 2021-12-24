@@ -20,7 +20,7 @@ function MoviesCardList({ moviesArr, isLoadingMovies, massageSearchMovies, delet
   return (
     <section className="movies-card-list">
       <ul className="movies-card-list__container">
-        {moviesArr.map((movie) => (
+        {(!isLoadingMovies && !massageSearchMovies) && moviesArr.map((movie) => (
           <MoviesCard
             key={movie.movieId}
             movieCard={movie}
