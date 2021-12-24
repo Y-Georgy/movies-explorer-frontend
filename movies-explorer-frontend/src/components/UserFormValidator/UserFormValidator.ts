@@ -70,8 +70,8 @@ export function UserFormValidator() {
       } else if (inputName === 'password') {
         return isValidPassword() && values.password.length > 0;
       }
+      return true
     })
-    // return (isValidName() && isValidEmail() && isValidPassword())
   }
 
   return { values, setValues, validators, handleChange, isValidForm };

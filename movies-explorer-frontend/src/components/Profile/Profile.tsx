@@ -21,9 +21,9 @@ function Profile( {setLoggedIn }: Props ) {
 
   useEffect(() => {
     if (currentUser.name && currentUser.email) {
-      setValues({ ...values, name: currentUser.name, email: currentUser.email })
+      setValues({ name: currentUser.name, email: currentUser.email, password: '' })
     }
-  }, [currentUser])
+  }, [currentUser, setValues])
 
   function handleSubmitEditProfile(evt: any) {
     evt.preventDefault();

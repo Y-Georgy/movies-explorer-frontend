@@ -1,7 +1,7 @@
 import './MoviesCardList.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { IMovie } from '../Movies/Movies';
-import React, { ReactChildren, useEffect, useState } from 'react';
+import React from 'react';
 import Preloader from '../Preloader/Preloader';
 
 interface Props {

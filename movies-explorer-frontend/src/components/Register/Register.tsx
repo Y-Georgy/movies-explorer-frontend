@@ -1,5 +1,5 @@
 import './Register.css'
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.svg'
 import { UserFormValidator } from '../UserFormValidator/UserFormValidator';
 import { mainApi } from '../../utils/MainApi';
@@ -43,7 +43,7 @@ function Register({ onSubmit, errorLoginMessage }: Props) {
 
   useEffect(() => {
     Object.keys(currentUser).length !== 0 && navigate('/profile')
-  }, [currentUser])
+  }, [currentUser, navigate])
 
   return (
     <main className="register">

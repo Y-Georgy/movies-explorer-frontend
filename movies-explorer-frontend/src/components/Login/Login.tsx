@@ -38,7 +38,7 @@ function Login( { onSubmit, errorLoginMessage, isFormDisabled }: Props) {
 
   useEffect(() => {
     Object.keys(currentUser).length !== 0 && navigate('/profile')
-  }, [currentUser])
+  }, [currentUser, navigate])
 
   return (
       <main className="login">
