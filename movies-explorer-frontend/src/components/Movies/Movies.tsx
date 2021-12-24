@@ -87,6 +87,10 @@ function Movies() {
           query: searchParams.query,
           isShort: searchParams.isShort
         }));
+        setSearchParams({
+          query: searchParams.query,
+          isShort: searchParams.isShort
+        })
       })
       .catch(() => {
         setMessageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
@@ -122,7 +126,11 @@ function Movies() {
       .then(userMovies => {
         const comparedMovies = checkLikedMovies(renderMovies, userMovies.data)
         setRenderMovies(comparedMovies);
-        localStorage.setItem('movies', JSON.stringify(comparedMovies));
+        localStorage.setItem('movies', JSON.stringify({
+          movies: comparedMovies,
+          query: searchParams.query,
+          isShort: searchParams.isShort
+        }));
       })
       .catch(console.log)
   }
