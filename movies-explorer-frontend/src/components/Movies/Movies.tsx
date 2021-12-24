@@ -33,6 +33,7 @@ function Movies() {
   const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
   const [messageSearchMovies, setMessageSearchMovies] = useState<string>('');
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([])
+  const [searchParams, setSearchParams] = useState({ query: '', isShort: false})
 
   // получение и подготовка массива с фильмами
   function formatMoviesArr(movies: any) {
@@ -93,12 +94,22 @@ function Movies() {
     }
   }
 
-  useEffect(() => {
+  function getLocalMovies() {
     const localMoviesJSON = localStorage.getItem('movies');
     if (localMoviesJSON) {
-      const localMoviesData = JSON.parse(localMoviesJSON)
-      setPreparedMovies(localMoviesData.movies)
+      return JSON.parse(localMoviesJSON)
     }
+    return {
+      movies: [],
+      query: '',
+      isShort: false
+    }
+  }
+
+  useEffect(() => {
+    const localMovies = getLocalMovies();
+    setPreparedMovies(localMovies.movies);
+    setSearchParams(localMovies);
   }, [])
 
   // Удаление и сохранение фильмов
@@ -168,7 +179,7 @@ function Movies() {
     <>
       <Header children={<Navigation />} bgcolor="grey"/>
       <main className="movies">
-        <SearchForm onSubmit={handleSubmitSearch} />
+        <SearchForm onSubmit={handleSubmitSearch} localSearchParams={searchParams}/>
         <MoviesCardList
           moviesArr={renderMovies}
           isLoadingMovies={isLoadingMovies}

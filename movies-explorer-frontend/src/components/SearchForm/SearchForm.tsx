@@ -4,13 +4,17 @@ import { useState, useEffect } from 'react';
 
 interface Props {
   onSubmit: (searchParams: ISearchParams) => void
+  localSearchParams?: {
+    query: string,
+    isShort: boolean
+  }
 }
 export interface ISearchParams {
   query: string,
   isShort: boolean
 }
 
-function SearchForm({ onSubmit }: Props) {
+function SearchForm({ onSubmit, localSearchParams }: Props) {
   const [searchParams, setSearchParams] = useState<ISearchParams>({ query: '', isShort: false})
 
   function handleSubmit(evt: any) {
@@ -36,11 +40,23 @@ function SearchForm({ onSubmit }: Props) {
     });
   }
 
+  useEffect(() => {
+    if (localSearchParams) {
+      setSearchParams({
+        query: localSearchParams.query,
+        isShort: localSearchParams.isShort
+      });
+    }
+  }, [localSearchParams])
+
   return (
     <form method="GET" className="search-form" name="search" onSubmit={handleSubmit} noValidate>
       <input className="search-form__query" placeholder="Фильм" type="text" value={searchParams.query} onChange={handleChangeInputValue}/>
       <button type="submit" className="search-form__btn-submit">Поиск</button>
-      <FilterCheckbox handleChangeIsShort={handleChangeIsShort}/>
+      <FilterCheckbox
+        handleChangeIsShort={handleChangeIsShort}
+        localSearchParams={localSearchParams}
+      />
       <hr className="search-form__line"/>
     </form>
   )
