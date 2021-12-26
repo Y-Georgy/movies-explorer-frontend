@@ -1,5 +1,4 @@
 import './Movies.css'
-import React from 'react';
 import Header from '../Header/Header';
 import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
@@ -11,6 +10,7 @@ import { mainApi } from '../../utils/MainApi';
 import { filterMovies } from '../../utils/utils';
 import iconMovie from '../../images/icon-movie.svg'
 import { ISearchParams } from '../SearchForm/SearchForm';
+import { SERVERERRORTEXT } from '../../utils/constants';
 
 type UserScreen = 's' | 'm' | 'l';
 export interface IMovie {
@@ -93,7 +93,7 @@ function Movies() {
         })
       })
       .catch(() => {
-        setMessageSearchMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+        setMessageSearchMovies(SERVERERRORTEXT);
       })
       .finally(() => {
         setIsLoadingMovies(false)
@@ -114,17 +114,41 @@ function Movies() {
     }
   }
 
+  function clearMoviesLikes(movies: any) {
+    return movies.map((movie: any) => {
+      if (movie._id) delete movie['_id']
+      return movie
+    })
+  }
+
   useEffect(() => {
     const localMovies = getLocalMovies();
-    setPreparedMovies(localMovies.movies);
-    setSearchParams(localMovies);
+      mainApi.getMovies()
+        .then(userMovies => {
+          let checkedMoviesArr
+          if (userMovies.data) {
+            checkedMoviesArr = checkLikedMovies(localMovies.movies, userMovies.data)
+          } else {
+            checkedMoviesArr = clearMoviesLikes(localMovies.movies)
+          }
+          setPreparedMovies(checkedMoviesArr);
+          setSearchParams(localMovies);
+        })
+        .catch(() => {
+          setMessageSearchMovies(SERVERERRORTEXT);
+        })
   }, [])
 
   // Удаление и сохранение фильмов
   function updateMovies() {
     mainApi.getMovies()
       .then(userMovies => {
-        const comparedMovies = checkLikedMovies(renderMovies, userMovies.data)
+        let comparedMovies
+        if (userMovies.data) {
+          comparedMovies = checkLikedMovies(renderMovies, userMovies.data)
+        } else {
+          comparedMovies = clearMoviesLikes(renderMovies)
+        }
         setRenderMovies(comparedMovies);
         localStorage.setItem('movies', JSON.stringify({
           movies: comparedMovies,

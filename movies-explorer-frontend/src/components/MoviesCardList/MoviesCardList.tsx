@@ -15,8 +15,6 @@ interface Props {
 
 function MoviesCardList({ moviesArr, isLoadingMovies, massageSearchMovies, deleteMovie, saveMovie, children: ButtonYet }: Props) {
 
-
-
   return (
     <section className="movies-card-list">
       <ul className="movies-card-list__container">

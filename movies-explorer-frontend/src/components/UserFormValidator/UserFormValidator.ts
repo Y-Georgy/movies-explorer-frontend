@@ -67,7 +67,7 @@ export function UserFormValidator() {
         return isValidName() && isValidNameLength() && values.name.length !== 0;
       } else if (inputName === 'email') {
         return isValidEmail() && values.email.length > 0;
-      } else if (inputName === 'password') {
+      } else {
         return isValidPassword() && values.password.length > 0;
       }
     })

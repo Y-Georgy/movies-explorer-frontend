@@ -48,6 +48,7 @@ function Profile( {setLoggedIn }: Props ) {
   function handleSignOut() {
     mainApi.signOut()
       .then(res => {
+        localStorage.removeItem('movies')
         setLoggedIn(false)
         setCurrentUser({})
         navigate('/')

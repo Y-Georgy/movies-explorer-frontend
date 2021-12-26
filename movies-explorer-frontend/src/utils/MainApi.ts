@@ -84,7 +84,6 @@ class MainApi {
   register(userData: IRegisterUserData) {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'post',
-      // credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(userData),
     }).then((res) => {
