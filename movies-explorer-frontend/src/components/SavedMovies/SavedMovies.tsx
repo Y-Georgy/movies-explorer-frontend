@@ -43,9 +43,11 @@ function SavedMovies () {
       .then((res) => {
         if (res.message) {
           setMessage(res.message)
+          localStorage.setItem('userMovies', JSON.stringify([]));
         } else {
           setUserMovies(res.data)
           setRenderMovies(res.data)
+          localStorage.setItem('userMovies', JSON.stringify(res.data));
         }
       })
       .catch((err) => {

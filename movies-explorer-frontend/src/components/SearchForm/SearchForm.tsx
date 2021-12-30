@@ -5,17 +5,13 @@ import { useState, useEffect } from 'react';
 interface Props {
   onSubmit: (searchParams: ISearchParams) => void,
   isFormDisabled?: boolean,
-  localSearchParams?: {
-    query: string,
-    isShort: boolean,
-  }
 }
 export interface ISearchParams {
   query: string,
   isShort: boolean
 }
 
-function SearchForm({ onSubmit, localSearchParams, isFormDisabled }: Props) {
+function SearchForm({ onSubmit, isFormDisabled }: Props) {
   const [searchParams, setSearchParams] = useState<ISearchParams>({ query: '', isShort: false})
 
   function handleSubmit(evt: any) {
@@ -42,13 +38,13 @@ function SearchForm({ onSubmit, localSearchParams, isFormDisabled }: Props) {
   }
 
   useEffect(() => {
-    if (localSearchParams) {
-      setSearchParams({
-        query: localSearchParams.query,
-        isShort: localSearchParams.isShort
-      });
+    const localSearchDataJSON = localStorage.getItem('searchData')
+    if (localSearchDataJSON) {
+      setSearchParams(JSON.parse(localSearchDataJSON));
+    } else {
+      setSearchParams({query: '', isShort: false});
     }
-  }, [localSearchParams])
+  }, [])
 
   return (
     <form method="GET" className="search-form" name="search" onSubmit={handleSubmit} noValidate>
@@ -69,7 +65,7 @@ function SearchForm({ onSubmit, localSearchParams, isFormDisabled }: Props) {
       </button>
       <FilterCheckbox
         handleChangeIsShort={handleChangeIsShort}
-        localSearchParams={localSearchParams}
+        isShortLocal={searchParams.isShort}
         isFormDisabled={isFormDisabled && isFormDisabled}
       />
       <hr className="search-form__line"/>

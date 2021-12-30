@@ -4,12 +4,10 @@ import { useEffect, useState } from 'react';
 interface Props {
   handleChangeIsShort: () => void,
   isFormDisabled?: boolean,
-  localSearchParams?: {
-    isShort: boolean
-  }
+  isShortLocal: boolean
 }
 
-function FilterCheckbox( {handleChangeIsShort, localSearchParams, isFormDisabled}: Props ) {
+function FilterCheckbox( {handleChangeIsShort, isShortLocal, isFormDisabled}: Props ) {
   const [isShort, setIsShort] = useState(false)
 
   function handleClickCheckBox() {
@@ -18,8 +16,8 @@ function FilterCheckbox( {handleChangeIsShort, localSearchParams, isFormDisabled
   }
 
   useEffect(() => {
-    if (localSearchParams) setIsShort(localSearchParams.isShort)
-  }, [localSearchParams])
+    if (isShortLocal) setIsShort(isShortLocal)
+  }, [isShortLocal])
 
  return (
     <div className="switch">
