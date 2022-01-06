@@ -13,6 +13,7 @@ import { ISearchParams } from "../SearchForm/SearchForm";
 function SavedMovies() {
   const [message, setMessage] = useState<string>("");
   const [isShort, setIsShort] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([]);
 
   function getAllMovies() {
@@ -46,6 +47,7 @@ function SavedMovies() {
         setRenderMovies(filtredMovies);
       }
       setIsShort(searchParams.isShort);
+      setSearchQuery(searchParams.query);
     }
   }
 
@@ -75,7 +77,11 @@ function SavedMovies() {
             return movie._id !== movieToDelete._id;
           });
           if (updatedMovies.length === 0) {
-            setMessage("Нет сохраненных фильмов");
+            if (searchQuery.length || isShort) {
+              setMessage("Ничего не найдено");
+            } else {
+              setMessage("Нет сохраненных фильмов");
+            }
           }
           setRenderMovies(updatedMovies);
 

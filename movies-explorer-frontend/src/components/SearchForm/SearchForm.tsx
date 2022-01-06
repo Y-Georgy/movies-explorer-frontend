@@ -1,18 +1,22 @@
-import './SearchForm.css'
-import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
-import { useState, useEffect } from 'react';
+import "./SearchForm.css";
+import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import { useState, useEffect } from "react";
 
 interface Props {
-  onSubmit: (searchParams: ISearchParams) => void,
-  isFormDisabled?: boolean,
+  onSubmit: (searchParams: ISearchParams) => void;
+  isFormDisabled?: boolean;
+  initialSearchParams?: ISearchParams;
 }
 export interface ISearchParams {
-  query: string,
-  isShort: boolean
+  query: string;
+  isShort: boolean;
 }
 
-function SearchForm({ onSubmit, isFormDisabled }: Props) {
-  const [searchParams, setSearchParams] = useState<ISearchParams>({ query: '', isShort: false})
+function SearchForm({ onSubmit, isFormDisabled, initialSearchParams }: Props) {
+  const [searchParams, setSearchParams] = useState<ISearchParams>({
+    query: "",
+    isShort: false,
+  });
 
   function handleSubmit(evt: any) {
     evt.preventDefault();
@@ -22,32 +26,37 @@ function SearchForm({ onSubmit, isFormDisabled }: Props) {
   function handleChangeInputValue(evt: any) {
     setSearchParams({
       query: evt.target.value,
-      isShort: searchParams.isShort
+      isShort: searchParams.isShort,
     });
   }
 
   function handleChangeIsShort() {
     onSubmit({
       query: searchParams.query,
-      isShort: !searchParams.isShort
-    })
+      isShort: !searchParams.isShort,
+    });
     setSearchParams({
       query: searchParams.query,
-      isShort: !searchParams.isShort
+      isShort: !searchParams.isShort,
     });
   }
 
   useEffect(() => {
-    const localSearchDataJSON = localStorage.getItem('searchData')
-    if (localSearchDataJSON) {
-      setSearchParams(JSON.parse(localSearchDataJSON));
+    if (initialSearchParams) {
+      setSearchParams(initialSearchParams);
     } else {
-      setSearchParams({query: '', isShort: false});
+      setSearchParams({ query: "", isShort: false });
     }
-  }, [])
+  }, [initialSearchParams]);
 
   return (
-    <form method="GET" className="search-form" name="search" onSubmit={handleSubmit} noValidate>
+    <form
+      method="GET"
+      className="search-form"
+      name="search"
+      onSubmit={handleSubmit}
+      noValidate
+    >
       <input
         className="search-form__query"
         placeholder="Фильм"
@@ -68,9 +77,9 @@ function SearchForm({ onSubmit, isFormDisabled }: Props) {
         isShortLocal={searchParams.isShort}
         isFormDisabled={isFormDisabled && isFormDisabled}
       />
-      <hr className="search-form__line"/>
+      <hr className="search-form__line" />
     </form>
-  )
+  );
 }
 
-export default SearchForm
+export default SearchForm;

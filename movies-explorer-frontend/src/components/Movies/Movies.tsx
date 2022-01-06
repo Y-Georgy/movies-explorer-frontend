@@ -40,6 +40,10 @@ function Movies() {
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([]);
   const [isFormSearchDisabled, setIsFormSearchDisabled] =
     useState<boolean>(false);
+  const [searchParams, setSearchParams] = useState<ISearchParams>({
+    query: "",
+    isShort: false,
+  });
 
   // получение и подготовка массива с фильмами
   function formatMoviesArr(movies: any) {
@@ -242,6 +246,15 @@ function Movies() {
     setRenderMovies(moviesToRender);
   }, [preparedMovies]);
 
+  useEffect(() => {
+    const localSearchDataJSON = localStorage.getItem("searchData");
+    if (localSearchDataJSON) {
+      setSearchParams(JSON.parse(localSearchDataJSON));
+    } else {
+      setSearchParams({ query: "", isShort: false });
+    }
+  }, []);
+
   return (
     <>
       <Header children={<Navigation />} bgcolor="grey" />
@@ -249,6 +262,7 @@ function Movies() {
         <SearchForm
           onSubmit={handleSubmitSearch}
           isFormDisabled={isFormSearchDisabled}
+          initialSearchParams={searchParams}
         />
         <MoviesCardList
           moviesArr={renderMovies}
