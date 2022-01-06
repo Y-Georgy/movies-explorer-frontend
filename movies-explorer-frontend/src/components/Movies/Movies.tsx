@@ -30,7 +30,6 @@ export interface IMovie {
 
 interface ILocalData {
   allMovies: IMovie[];
-  userMovies: IMovie[];
   searchData: { query: string; isShort: boolean };
 }
 
@@ -85,13 +84,8 @@ function Movies() {
     return newMoviesArr;
   }
 
-  function prepareMovies(
-    allMovies: IMovie[],
-    userMovies: IMovie[],
-    searchParams: ISearchParams
-  ) {
+  function prepareMovies(allMovies: IMovie[], searchParams: ISearchParams) {
     let newMoviesArr: IMovie[] = allMovies;
-    newMoviesArr = checkLikedMovies(allMovies, userMovies);
     newMoviesArr = filterMovies(searchParams, newMoviesArr);
     if (newMoviesArr.length === 0) setMessageSearchMovies("Ничего не найдено");
     setPreparedMovies(newMoviesArr);
@@ -112,7 +106,7 @@ function Movies() {
 
       const localData = getLocalData();
       if (localData.allMovies.length !== 0) {
-        prepareMovies(localData.allMovies, localData.userMovies, searchParams);
+        prepareMovies(localData.allMovies, searchParams);
       } else {
         setIsLoadingMovies(true);
         setIsFormSearchDisabled(true);
@@ -120,9 +114,15 @@ function Movies() {
           .then(([allMovies, userMovies]) => {
             const allMoviesArr = formatMoviesArr(allMovies);
             if (!userMovies.data) userMovies.data = [];
-            prepareMovies(allMoviesArr, userMovies.data, searchParams);
-            localStorage.setItem("allMovies", JSON.stringify(allMoviesArr));
-            localStorage.setItem("userMovies", JSON.stringify(userMovies.data));
+            const checkedlikesMoviesArr = checkLikedMovies(
+              allMoviesArr,
+              userMovies.data
+            );
+            prepareMovies(checkedlikesMoviesArr, searchParams);
+            localStorage.setItem(
+              "allMovies",
+              JSON.stringify(checkedlikesMoviesArr)
+            );
           })
           .catch(() => {
             setMessageSearchMovies(SERVERERRORTEXT);
@@ -137,19 +137,15 @@ function Movies() {
 
   function getLocalData() {
     const localAllMoviesJSON = localStorage.getItem("allMovies");
-    const localUserMoviesJSON = localStorage.getItem("userMovies");
     const localSearchDataJSON = localStorage.getItem("searchData");
 
     let localData: ILocalData = {
       allMovies: [],
-      userMovies: [],
       searchData: { query: "", isShort: false },
     };
 
     if (localAllMoviesJSON)
       localData.allMovies = JSON.parse(localAllMoviesJSON);
-    if (localUserMoviesJSON)
-      localData.userMovies = JSON.parse(localUserMoviesJSON);
     if (localSearchDataJSON)
       localData.searchData = JSON.parse(localSearchDataJSON);
 
@@ -159,11 +155,7 @@ function Movies() {
   useEffect(() => {
     const localData = getLocalData();
     if (localData.allMovies.length !== 0) {
-      prepareMovies(
-        localData.allMovies,
-        localData.userMovies,
-        localData.searchData
-      );
+      prepareMovies(localData.allMovies, localData.searchData);
     }
   }, []);
 
@@ -180,19 +172,11 @@ function Movies() {
           });
           localStorage.setItem("allMovies", JSON.stringify(newAllMovies));
 
-          const indexMovieToDelete = localData.userMovies.findIndex(
-            (elem: IMovie) => elem._id === movie._id
-          );
-          localData.userMovies.splice(indexMovieToDelete, 1);
-          localStorage.setItem(
-            "userMovies",
-            JSON.stringify(localData.userMovies)
-          );
+          const newRenderMovies = renderMovies.map((elem: IMovie) => {
+            if (elem._id === movie._id) delete elem._id;
+            return elem;
+          });
 
-          const newRenderMovies = checkLikedMovies(
-            renderMovies,
-            localData.userMovies
-          );
           setRenderMovies(newRenderMovies);
         })
         .catch(console.log);
@@ -212,16 +196,12 @@ function Movies() {
           return elem;
         });
         localStorage.setItem("allMovies", JSON.stringify(newAllMovies));
-        localData.userMovies.push(newUserMovie);
-        localStorage.setItem(
-          "userMovies",
-          JSON.stringify(localData.userMovies)
-        );
 
-        const newRenderMovies = checkLikedMovies(
-          renderMovies,
-          localData.userMovies
-        );
+        const newRenderMovies = renderMovies.map((elem: IMovie) => {
+          if (elem.movieId === newUserMovie.movieId)
+            elem._id = newUserMovie._id;
+          return elem;
+        });
         setRenderMovies(newRenderMovies);
       })
       .catch(console.log);
@@ -273,7 +253,7 @@ function Movies() {
         <MoviesCardList
           moviesArr={renderMovies}
           isLoadingMovies={isLoadingMovies}
-          massageSearchMovies={messageSearchMovies}
+          messageSearchMovies={messageSearchMovies}
           deleteMovie={deleteMovie}
           saveMovie={saveMovie}
           children={

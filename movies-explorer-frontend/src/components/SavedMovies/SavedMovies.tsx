@@ -1,32 +1,47 @@
-import './SavedMovies.css'
-import Header from '../Header/Header';
-import Navigation from '../Navigation/Navigation';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Footer from '../Footer/Footer';
-import { mainApi } from '../../utils/MainApi';
-import { useEffect, useState } from 'react';
-import { filterMovies } from '../../utils/utils';
-import { IMovie } from '../Movies/Movies';
-import { ISearchParams } from '../SearchForm/SearchForm';
+import "./SavedMovies.css";
+import Header from "../Header/Header";
+import Navigation from "../Navigation/Navigation";
+import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import Footer from "../Footer/Footer";
+import { mainApi } from "../../utils/MainApi";
+import { useEffect, useState } from "react";
+import { filterMovies } from "../../utils/utils";
+import { IMovie } from "../Movies/Movies";
+import { ISearchParams } from "../SearchForm/SearchForm";
 
-function SavedMovies () {
-  const [userMovies, setUserMovies] = useState<IMovie[]>([]);
-  const [message, setMessage] = useState<string>('');
-  const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
-  const [isShort, setIsShort] = useState(false)
-  const [renderMovies, setRenderMovies] = useState<IMovie[]>([])
-  const [isFormSearchDisabled, setIsFormSearchDisabled] = useState<boolean>(false)
+function SavedMovies() {
+  const [message, setMessage] = useState<string>("");
+  const [isShort, setIsShort] = useState(false);
+  const [renderMovies, setRenderMovies] = useState<IMovie[]>([]);
+
+  function getAllMovies() {
+    const localAllMoviesJSON = localStorage.getItem("allMovies");
+    let localAllMovies = [];
+    if (localAllMoviesJSON) {
+      localAllMovies = JSON.parse(localAllMoviesJSON);
+    }
+    return localAllMovies;
+  }
+
+  function filterUserMovies(movies: IMovie[]) {
+    const userMovies = movies.filter((movie: IMovie) => {
+      if (movie._id) return movie;
+    });
+    return userMovies;
+  }
 
   // поиск
   function handleSubmitSearch(searchParams: ISearchParams) {
-    setMessage('');
+    setMessage("");
     if (searchParams.query.length === 0 && isShort === searchParams.isShort) {
-      setMessage('Нужно ввести ключевое слово');
+      setMessage("Нужно ввести ключевое слово");
     } else {
-      const filtredMovies = filterMovies(searchParams, userMovies)
+      const allMovies = getAllMovies();
+      const userMovies = filterUserMovies(allMovies);
+      const filtredMovies = filterMovies(searchParams, userMovies);
       if (filtredMovies.length === 0) {
-        setMessage('Ничего не найдено');
+        setMessage("Ничего не найдено");
       } else {
         setRenderMovies(filtredMovies);
       }
@@ -35,61 +50,64 @@ function SavedMovies () {
   }
 
   // получение фильмов
-  function getCurruntUserMovies() {
-    setIsLoadingMovies(true);
-    setIsFormSearchDisabled(true)
-    setMessage('');
-    mainApi.getMovies()
-      .then((res) => {
-        if (res.message) {
-          setMessage(res.message)
-          localStorage.setItem('userMovies', JSON.stringify([]));
-        } else {
-          setUserMovies(res.data)
-          setRenderMovies(res.data)
-          localStorage.setItem('userMovies', JSON.stringify(res.data));
-        }
-      })
-      .catch((err) => {
-        setMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-      })
-      .finally(() => {
-        setIsFormSearchDisabled(false)
-        setIsLoadingMovies(false)
-      })
+  function getCurrentUserMovies() {
+    setMessage("");
+    const allMovies = getAllMovies();
+    const userMovies = filterUserMovies(allMovies);
+    if (userMovies.length === 0) {
+      setMessage("Нет сохраненных фильмов");
+    }
+    setRenderMovies(userMovies);
   }
 
   useEffect(() => {
-    getCurruntUserMovies();
-  }, [])
+    getCurrentUserMovies();
+  }, []);
 
   // удаление фильмов
-  function deleteMovie(movie: IMovie) {
-    if (movie._id) {
-      mainApi.deleteMovie(movie._id)
-        .then(res => getCurruntUserMovies())
-        .catch(err => console.log(err))
+  function deleteMovie(movieToDelete: IMovie) {
+    if (movieToDelete._id) {
+      mainApi
+        .deleteMovie(movieToDelete._id)
+        .then((res) => {
+          setMessage("");
+          const updatedMovies = renderMovies.filter((movie: IMovie) => {
+            return movie._id !== movieToDelete._id;
+          });
+          if (updatedMovies.length === 0) {
+            setMessage("Нет сохраненных фильмов");
+          }
+          setRenderMovies(updatedMovies);
+
+          const allMovies = getAllMovies();
+          const updateAllMovies = allMovies.map((movie: IMovie) => {
+            if (movie._id === movieToDelete._id) {
+              delete movie["_id"];
+              return movie;
+            } else {
+              return movie;
+            }
+          });
+          localStorage.setItem("allMovies", JSON.stringify(updateAllMovies));
+        })
+        .catch((err) => console.log(err));
     }
   }
 
   return (
     <>
-      <Header children={<Navigation />} bgcolor="grey"/>
+      <Header children={<Navigation />} bgcolor="grey" />
       <main className="movies">
-        <SearchForm
-          onSubmit={handleSubmitSearch}
-          isFormDisabled={isFormSearchDisabled}
-        />
+        <SearchForm onSubmit={handleSubmitSearch} />
         <MoviesCardList
-          moviesArr={message.length === 0 ? renderMovies : []}
-          isLoadingMovies={isLoadingMovies}
-          massageSearchMovies={message}
+          moviesArr={renderMovies}
+          messageSearchMovies={message}
           deleteMovie={deleteMovie}
         />
         <Footer />
       </main>
     </>
-  )
+  );
 }
 
 export default SavedMovies;
