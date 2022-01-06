@@ -10,7 +10,11 @@ import { mainApi } from "../../utils/MainApi";
 import { filterMovies } from "../../utils/utils";
 import iconMovie from "../../images/icon-movie.svg";
 import { ISearchParams } from "../SearchForm/SearchForm";
-import { SERVERERRORTEXT } from "../../utils/constants";
+import {
+  COUNTTOLOAD,
+  SERVERERRORTEXT,
+  WINDOWSIZE,
+} from "../../utils/constants";
 
 type UserScreen = "s" | "m" | "l";
 export interface IMovie {
@@ -214,35 +218,26 @@ function Movies() {
   // вывод фильмов в определенном количестве
   function checkClientWindow(): UserScreen {
     const windowWidth = window.innerWidth;
-    if (windowWidth >= 1280) return "l";
-    else if (windowWidth < 768) return "s";
+    if (windowWidth >= WINDOWSIZE.l) return "l";
+    else if (windowWidth < WINDOWSIZE.s) return "s";
     else return "m";
-  }
-
-  function getQuantityToFirstLoad(screen: UserScreen) {
-    if (screen === "s") return 5;
-    else if (screen === "m") return 8;
-    else return 12;
-  }
-
-  function getQuantityToLoadAnother(screen: UserScreen) {
-    if (screen === "l") return 3;
-    else return 2;
   }
 
   function handleClickBtnAnother() {
     const quantityRenderedMovies = renderMovies.length;
     const clientScreen = checkClientWindow();
-    const quantityToAdd = getQuantityToLoadAnother(clientScreen);
-    const quantityToRender = quantityRenderedMovies + quantityToAdd;
+    const quantityToRender =
+      quantityRenderedMovies + COUNTTOLOAD[clientScreen].loadYet;
     const moviesToRender = preparedMovies.slice(0, quantityToRender);
     setRenderMovies(moviesToRender);
   }
 
   useEffect(() => {
     const clientScreen = checkClientWindow();
-    const quantityToFirstLoad = getQuantityToFirstLoad(clientScreen);
-    const moviesToRender = preparedMovies.slice(0, quantityToFirstLoad);
+    const moviesToRender = preparedMovies.slice(
+      0,
+      COUNTTOLOAD[clientScreen].firstLoad
+    );
     setRenderMovies(moviesToRender);
   }, [preparedMovies]);
 

@@ -64,7 +64,7 @@ function SavedMovies() {
 
   useEffect(() => {
     getCurrentUserMovies();
-  }, []);
+  }, [getCurrentUserMovies]);
 
   // удаление фильмов
   function deleteMovie(movieToDelete: IMovie) {
