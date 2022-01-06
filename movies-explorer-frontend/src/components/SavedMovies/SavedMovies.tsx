@@ -26,9 +26,9 @@ function SavedMovies() {
   }
 
   function filterUserMovies(movies: IMovie[]) {
-    const userMovies = movies.filter((movie: IMovie) => {
-      if (movie._id) return movie;
-    });
+    const userMovies = movies.filter(
+      (movie: IMovie) => movie._id !== undefined
+    );
     return userMovies;
   }
 
@@ -52,7 +52,7 @@ function SavedMovies() {
   }
 
   // получение фильмов
-  function getCurrentUserMovies() {
+  useEffect(() => {
     setMessage("");
     const allMovies = getAllMovies();
     const userMovies = filterUserMovies(allMovies);
@@ -60,11 +60,7 @@ function SavedMovies() {
       setMessage("Нет сохраненных фильмов");
     }
     setRenderMovies(userMovies);
-  }
-
-  useEffect(() => {
-    getCurrentUserMovies();
-  }, [getCurrentUserMovies]);
+  }, []);
 
   // удаление фильмов
   function deleteMovie(movieToDelete: IMovie) {
