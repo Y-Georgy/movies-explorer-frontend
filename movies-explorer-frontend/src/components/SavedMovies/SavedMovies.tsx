@@ -9,12 +9,14 @@ import { useEffect, useState } from "react";
 import { filterMovies } from "../../utils/utils";
 import { IMovie } from "../Movies/Movies";
 import { ISearchParams } from "../SearchForm/SearchForm";
+import { SERVERERRORTEXT } from "../../utils/constants";
 
 function SavedMovies() {
   const [message, setMessage] = useState<string>("");
   const [isShort, setIsShort] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [renderMovies, setRenderMovies] = useState<IMovie[]>([]);
+  const [isLoadingMovies, setIsLoadingMovies] = useState<boolean>(false);
 
   function getAllMovies() {
     const localAllMoviesJSON = localStorage.getItem("allMovies");
@@ -25,11 +27,13 @@ function SavedMovies() {
     return localAllMovies;
   }
 
-  function filterUserMovies(movies: IMovie[]) {
-    const userMovies = movies.filter(
-      (movie: IMovie) => movie._id !== undefined
-    );
-    return userMovies;
+  function getUserMovies() {
+    const localUserMoviesJSON = localStorage.getItem("userMovies");
+    let localUserMovies = null;
+    if (localUserMoviesJSON) {
+      localUserMovies = JSON.parse(localUserMoviesJSON);
+    }
+    return localUserMovies;
   }
 
   // поиск
@@ -38,13 +42,14 @@ function SavedMovies() {
     if (searchParams.query.length === 0 && isShort === searchParams.isShort) {
       setMessage("Нужно ввести ключевое слово");
     } else {
-      const allMovies = getAllMovies();
-      const userMovies = filterUserMovies(allMovies);
-      const filtredMovies = filterMovies(searchParams, userMovies);
-      if (filtredMovies.length === 0) {
-        setMessage("Ничего не найдено");
-      } else {
-        setRenderMovies(filtredMovies);
+      const userMovies = getUserMovies();
+      if (userMovies) {
+        const filtredMovies = filterMovies(searchParams, userMovies);
+        if (filtredMovies.length === 0) {
+          setMessage("Ничего не найдено");
+        } else {
+          setRenderMovies(filtredMovies);
+        }
       }
       setIsShort(searchParams.isShort);
       setSearchQuery(searchParams.query);
@@ -54,12 +59,29 @@ function SavedMovies() {
   // получение фильмов
   useEffect(() => {
     setMessage("");
-    const allMovies = getAllMovies();
-    const userMovies = filterUserMovies(allMovies);
-    if (userMovies.length === 0) {
-      setMessage("Нет сохраненных фильмов");
+    const userMovies = getUserMovies();
+    if (!userMovies) {
+      setIsLoadingMovies(true);
+      mainApi
+        .getMovies()
+        .then((res) => {
+          if (res.data) {
+            setRenderMovies(res.data);
+            localStorage.setItem("userMovies", JSON.stringify(res.data));
+          } else {
+            localStorage.setItem("userMovies", JSON.stringify([]));
+            setMessage("Нет сохраненных фильмов");
+          }
+        })
+        .catch(() => {
+          setMessage(SERVERERRORTEXT);
+        })
+        .finally(() => {
+          setIsLoadingMovies(false);
+        });
+    } else {
+      setRenderMovies(userMovies);
     }
-    setRenderMovies(userMovies);
   }, []);
 
   // удаление фильмов
@@ -82,15 +104,28 @@ function SavedMovies() {
           setRenderMovies(updatedMovies);
 
           const allMovies = getAllMovies();
-          const updateAllMovies = allMovies.map((movie: IMovie) => {
-            if (movie._id === movieToDelete._id) {
-              delete movie["_id"];
-              return movie;
-            } else {
-              return movie;
-            }
-          });
-          localStorage.setItem("allMovies", JSON.stringify(updateAllMovies));
+          if (allMovies.length !== 0) {
+            const updateAllMovies = allMovies.map((movie: IMovie) => {
+              if (movie._id === movieToDelete._id) {
+                delete movie["_id"];
+                return movie;
+              } else {
+                return movie;
+              }
+            });
+            localStorage.setItem("allMovies", JSON.stringify(updateAllMovies));
+          }
+
+          const userMovies = getUserMovies();
+          if (userMovies) {
+            const updatedUserMovies = userMovies.filter(
+              (movie: IMovie) => movie._id !== movieToDelete._id
+            );
+            localStorage.setItem(
+              "userMovies",
+              JSON.stringify(updatedUserMovies)
+            );
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -105,6 +140,7 @@ function SavedMovies() {
           moviesArr={renderMovies}
           messageSearchMovies={message}
           deleteMovie={deleteMovie}
+          isLoadingMovies={isLoadingMovies}
         />
         <Footer />
       </main>

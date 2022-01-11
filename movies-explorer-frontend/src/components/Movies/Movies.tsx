@@ -99,6 +99,17 @@ function Movies() {
     setPreparedMovies(newMoviesArr);
   }
 
+  function handleMovies(
+    allMovies: IMovie[],
+    userMovies: IMovie[],
+    searchParams: ISearchParams
+  ) {
+    const allMoviesArr = formatMoviesArr(allMovies);
+    const checkedlikesMoviesArr = checkLikedMovies(allMoviesArr, userMovies);
+    prepareMovies(checkedlikesMoviesArr, searchParams);
+    localStorage.setItem("allMovies", JSON.stringify(checkedlikesMoviesArr));
+  }
+
   function handleSubmitSearch(searchParams: ISearchParams) {
     if (searchParams.query.length === 0) {
       setMessageSearchMovies("Нужно ввести ключевое слово");
@@ -116,29 +127,41 @@ function Movies() {
       if (localData.allMovies.length !== 0) {
         prepareMovies(localData.allMovies, searchParams);
       } else {
-        setIsLoadingMovies(true);
-        setIsFormSearchDisabled(true);
-        Promise.all([moviesApi.getMovies(), mainApi.getMovies()])
-          .then(([allMovies, userMovies]) => {
-            const allMoviesArr = formatMoviesArr(allMovies);
-            if (!userMovies.data) userMovies.data = [];
-            const checkedlikesMoviesArr = checkLikedMovies(
-              allMoviesArr,
-              userMovies.data
-            );
-            prepareMovies(checkedlikesMoviesArr, searchParams);
-            localStorage.setItem(
-              "allMovies",
-              JSON.stringify(checkedlikesMoviesArr)
-            );
-          })
-          .catch(() => {
-            setMessageSearchMovies(SERVERERRORTEXT);
-          })
-          .finally(() => {
-            setIsLoadingMovies(false);
-            setIsFormSearchDisabled(false);
-          });
+        const localUserMoviesJSON = localStorage.getItem("userMovies");
+        if (localUserMoviesJSON) {
+          setIsLoadingMovies(true);
+          setIsFormSearchDisabled(true);
+          moviesApi
+            .getMovies()
+            .then((allMovies) => {
+              const userMovies = JSON.parse(localUserMoviesJSON);
+              handleMovies(allMovies, userMovies, searchParams);
+            })
+            .catch(() => {
+              setMessageSearchMovies(SERVERERRORTEXT);
+            })
+            .finally(() => {
+              setIsLoadingMovies(false);
+              setIsFormSearchDisabled(false);
+            });
+        } else {
+          setIsLoadingMovies(true);
+          setIsFormSearchDisabled(true);
+          Promise.all([moviesApi.getMovies(), mainApi.getMovies()])
+            .then(([allMovies, userMovies]) => {
+              let userMoviesArr = [];
+              if (userMovies.data) userMoviesArr = userMovies.data;
+              handleMovies(allMovies, userMoviesArr, searchParams);
+              localStorage.setItem("userMovies", JSON.stringify(userMoviesArr));
+            })
+            .catch(() => {
+              setMessageSearchMovies(SERVERERRORTEXT);
+            })
+            .finally(() => {
+              setIsLoadingMovies(false);
+              setIsFormSearchDisabled(false);
+            });
+        }
       }
     }
   }
@@ -173,12 +196,20 @@ function Movies() {
         .deleteMovie(movie._id)
         .then((res) => {
           const localData = getLocalData();
-
           const newAllMovies = localData.allMovies.map((elem: IMovie) => {
             if (elem._id === movie._id) delete elem._id;
             return elem;
           });
           localStorage.setItem("allMovies", JSON.stringify(newAllMovies));
+
+          const localUserMoviesJSON = localStorage.getItem("userMovies");
+          if (localUserMoviesJSON) {
+            const userMovies = JSON.parse(localUserMoviesJSON);
+            const newUserMovies = userMovies.filter(
+              (elem: IMovie) => elem._id !== movie._id
+            );
+            localStorage.setItem("userMovies", JSON.stringify(newUserMovies));
+          }
 
           const newRenderMovies = renderMovies.map((elem: IMovie) => {
             if (elem._id === movie._id) delete elem._id;
@@ -204,6 +235,13 @@ function Movies() {
           return elem;
         });
         localStorage.setItem("allMovies", JSON.stringify(newAllMovies));
+
+        const localUserMoviesJSON = localStorage.getItem("userMovies");
+        if (localUserMoviesJSON) {
+          const userMovies = JSON.parse(localUserMoviesJSON);
+          userMovies.push(newUserMovie);
+          localStorage.setItem("userMovies", JSON.stringify(userMovies));
+        }
 
         const newRenderMovies = renderMovies.map((elem: IMovie) => {
           if (elem.movieId === newUserMovie.movieId)

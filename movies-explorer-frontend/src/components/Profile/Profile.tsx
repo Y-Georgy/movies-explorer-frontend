@@ -62,6 +62,7 @@ function Profile({ setLoggedIn }: Props) {
         setCurrentUser({});
         localStorage.removeItem("allMovies");
         localStorage.removeItem("searchData");
+        localStorage.removeItem("userMovies");
         navigate("/");
       })
       .catch(console.log);
