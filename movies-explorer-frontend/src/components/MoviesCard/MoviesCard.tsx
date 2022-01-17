@@ -1,47 +1,64 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './MoviesCard.css'
-import { ICard } from '../../utils/initialCards';
+import { IMovie } from '../Movies/Movies';
 
 interface Props {
-  movieCard: ICard
+  movieCard: IMovie,
+  deleteMovie: (movie: IMovie) => void,
+  saveMovie?: (movie: IMovie) => void,
 }
 
-const MoviesCard = ({ movieCard }: Props) => {
-  const [isSavedMovie, setIsSavedMovie] = useState<Boolean>(false)
+const MoviesCard = ({ movieCard, deleteMovie, saveMovie }: Props) => {
   const { pathname } = useLocation();
 
-  function handleClickBtnSave(): void {
-    setIsSavedMovie(!isSavedMovie);
+  function handleClickBtnLike(): void {
+    if (movieCard._id) {
+      deleteMovie(movieCard)
+    } else if (saveMovie) {
+      saveMovie(movieCard)
+    }
   }
 
-  function getTimeFromMins(): string {
-    const hours = Math.floor(movieCard.duration/60);
-    const minutes = movieCard.duration % 60;
+  function getTimeFromMins(duration: any) {
+    const hours = Math.floor(duration/60);
+    const minutes = duration % 60;
     return hours + 'ч ' + minutes + 'м';
   };
 
   function handleClickBtnDelete() {
-
+    deleteMovie(movieCard);
   }
 
   function getButton(): React.ReactNode | null {
     if (pathname === "/movies") {
-      return <button className={`movies-card__button movies-card__button_icon_save${isSavedMovie ? ' movies-card__button_icon_active' : ''}`} onClick={handleClickBtnSave} />
+      return <button className={
+          `movies-card__button
+          ${movieCard._id
+            ? ' movies-card__button_icon_active'
+            : ' movies-card__button_icon_save'}`
+        }
+        onClick={handleClickBtnLike}
+        title={
+          movieCard._id
+            ? 'Удалить фильм из сохранённых'
+            : 'Сохранить фильм'
+        }
+      />
     }
     if (pathname === "/saved-movies") {
-      return <button className="movies-card__button movies-card__button_icon_delete" onClick={handleClickBtnDelete} />
+      return <button className="movies-card__button movies-card__button_icon_delete" onClick={handleClickBtnDelete} title='Удалить фильм из сохранённых'/>
     }
     return null
   }
 
   return (
     <li className="movies-card">
-      <a href={movieCard.trailerLink} target="_blank" rel="noreferrer">
-        <img src={movieCard.url} alt="Обложка фильма" className="movies-card__image" />
+      <a href={movieCard.trailer} target="_blank" rel="noreferrer">
+        <img src={movieCard.image} alt="Обложка фильма" className="movies-card__image" />
       </a>
       <p className="movies-card__name">{movieCard.nameRU}</p>
-      <p className="movies-card__duration">{getTimeFromMins()}</p>
+      <p className="movies-card__duration">{getTimeFromMins(movieCard.duration)}</p>
       {getButton()}
     </li>
   )

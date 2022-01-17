@@ -12,8 +12,8 @@ function AboutMe() {
           <p className="about-me__text">Я родился и живу в Саратове, закончил факультет экономики СГУ. У меня есть жена и дочь. Я люблю слушать музыку, а ещё увлекаюсь бегом. Недавно начал кодить.
             С 2015 года работал в компании «СКБ Контур». После того, как прошёл курс по веб-разработке, начал заниматься фриланс-заказами и ушёл с постоянной работы.</p>
           <div className="about-me__social-links">
-            <a href="https://www.facebook.com/Dmitry.Medvedev/" className="about-me__social-link" target="_blank">FaceBook</a>
-            <a href="https://github.com/Y-Georgy" className="about-me__social-link" target="_blank">Github</a>
+            <a href="https://www.facebook.com/Dmitry.Medvedev/" className="about-me__social-link" target="_blank" rel="noreferrer">FaceBook</a>
+            <a href="https://github.com/Y-Georgy" className="about-me__social-link" target="_blank" rel="noreferrer">Github</a>
           </div>
         </div>
         <img src={avatar} alt="Фото автора" className="about-me__photo" />

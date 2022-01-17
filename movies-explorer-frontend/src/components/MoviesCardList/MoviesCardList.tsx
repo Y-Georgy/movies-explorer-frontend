@@ -1,52 +1,49 @@
-import './MoviesCardList.css'
-import MoviesCard from '../MoviesCard/MoviesCard';
-import { initialCards } from '../../utils/initialCards';
-import { ICard } from '../../utils/initialCards';
-import React, { useEffect, useState } from 'react';
-import Preloader from '../Preloader/Preloader';
+import "./MoviesCardList.css";
+import MoviesCard from "../MoviesCard/MoviesCard";
+import { IMovie } from "../Movies/Movies";
+import React from "react";
+import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList() {
-  // eslint-disable-next-line
-  const [movies, setMovies] = useState<ICard[]>(initialCards)
-  const [quantityRenderMovies, setQuantityRenderMovies] = useState<number>(6)
-  const [renderMovies, setRenderMovies] = useState<React.ReactNode[]>([])
-  const [isContent, setIsContent] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+interface Props {
+  moviesArr: IMovie[];
+  isLoadingMovies?: boolean;
+  messageSearchMovies: string;
+  deleteMovie: (movie: IMovie) => void;
+  saveMovie?: (movie: IMovie) => void;
+  children?: React.ReactNode;
+}
 
-  // времменный эффект для тестирования верстки
-  useEffect(() => {
-      setIsLoading(true);
-      function testLoading(): void {
-        let content = [];
-        for (let i: number = 0; i < quantityRenderMovies && i < movies.length; i++) {
-          content.push(<MoviesCard
-              key={movies[i]._id}
-              movieCard={movies[i]}
-            />);
-        }
-        if (content.length === 0) {
-          setIsContent(false);
-        } else {
-        setIsContent(true);
-        }
-        setIsLoading(false);
-        setRenderMovies(content);
-      };
-      setTimeout(testLoading, 2000); // убрать по готовности API
-  }, [quantityRenderMovies]);
-
-  function handleClickBtnAnother(): void {
-    setQuantityRenderMovies(quantityRenderMovies + 6);
-  }
-
+function MoviesCardList({
+  moviesArr,
+  isLoadingMovies,
+  messageSearchMovies,
+  deleteMovie,
+  saveMovie,
+  children: ButtonYet,
+}: Props) {
   return (
     <section className="movies-card-list">
-      <ul className="movies-card-list__container">{renderMovies}</ul>
-      {isLoading && <Preloader />}
-      {!isContent && <span className="movies-card-list__content-not-found">Ни чего не найдено</span>}
-      {(movies.length > quantityRenderMovies && !isLoading) && <button  className="movies-card-list__button-another" onClick={handleClickBtnAnother}>Ещё</button>}
+      <ul className="movies-card-list__container">
+        {!isLoadingMovies &&
+          !messageSearchMovies &&
+          moviesArr.map((movie) => (
+            <MoviesCard
+              key={movie.movieId}
+              movieCard={movie}
+              deleteMovie={deleteMovie}
+              saveMovie={saveMovie}
+            />
+          ))}
+      </ul>
+      {isLoadingMovies && <Preloader />}
+      {messageSearchMovies && (
+        <span className="movies-card-list__content-not-found">
+          {messageSearchMovies}
+        </span>
+      )}
+      {ButtonYet && !isLoadingMovies && !messageSearchMovies && ButtonYet}
     </section>
-  )
+  );
 }
 
 export default MoviesCardList;
